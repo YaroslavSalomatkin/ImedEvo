@@ -3,21 +3,33 @@ package imedevo.service;
 import imedevo.model.User;
 import imedevo.repository.UserRepository;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-
-@Service
+import java.util.Optional;
+import java.util.stream.Collectors;
+@AllArgsConstructor
 public class UserService {
 
-  @Autowired
-  private UserRepository userRepository;
 
-  public UserService() {
-  }
+  private final UserRepository userRepository;
+
 
   public List<User> getAll() {
-    return userRepository.getUsers();
+    return new ArrayList<>(userRepository.findAll());
   }
+  public Optional<User> getById(Integer id) {
+    return userRepository.findById(id);
+  }
+  public User save(User user) {
+    return userRepository.save(user);
+  }
+
+  public Optional<User> delete(Integer id) {
+    return userRepository.delete(id);
+  }
+
 }

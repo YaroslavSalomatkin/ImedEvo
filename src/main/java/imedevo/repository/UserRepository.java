@@ -4,62 +4,43 @@ import imedevo.model.User;
 
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class UserRepository {
 
-  private List<User> users = new ArrayList();
+  private Map<Integer, User> users = new ConcurrentHashMap<Integer,User>() {{
+    put(0, new User(0, "Tom", "324324", "weewrewr@test.ru",1992));
+    put(1, new User(1, "Shon", "532532", "weasdas@test.ru",1991));
+    put(2, new User(2, "Misha", "6435", "wezxc@test.ru",1934));
+    put(3, new User(3, "Katya", "234324", "wedfhdf@test.ru",1956));
+    put(4, new User(4, "Dima", "345345", "wehhgfh@test.ru",1976));
 
-  public UserRepository() {
-    User user = new User();
-    user.setId(1);
-    user.setName("Olya");
-    user.setEmail("olya@test.com");
-    user.setPhone("0931111111");
-    user.setBirthDate(1986);
+  }};
+  private AtomicInteger counter = new AtomicInteger(1);
 
-    users.add(user);
 
-    user = new User();
-    user.setId(2);
-    user.setName("Petya");
-    user.setEmail("petya@test.com");
-    user.setPhone("0982222222");
-    user.setBirthDate(1973);
-
-    users.add(user);
-
-    user = new User();
-    user.setId(3);
-    user.setName("Masha");
-    user.setEmail("masha@test.com");
-    user.setPhone("0673333333");
-    user.setBirthDate(1993);
-
-    users.add(user);
-
-    user = new User();
-    user.setId(4);
-    user.setName("Sasha");
-    user.setEmail("sasha@test.com");
-    user.setPhone("0944444444");
-    user.setBirthDate(2000);
-
-    users.add(user);
-
-    user = new User();
-    user.setId(5);
-    user.setName("Klavdiya Olegovna");
-    user.setEmail("KlavdiyaOlegovna@test.com");
-    user.setPhone("0482654321");
-    user.setBirthDate(1941);
-
-    users.add(user);
+  public Collection<User> findAll() {
+    return users.values();
+  }
+  public Optional<User> findById(Integer id) {
+    return Optional.ofNullable(users.get(id));
   }
 
-  public List<User> getUsers() {
-    return users;
+  public User save(User user) {
+
+    if (user.getId() == null) {
+      user.setId(counter.incrementAndGet());
+    }
+
+    users.put(user.getId(), user);
+
+    return user;
+  }
+
+  public Optional<User> delete(Integer id) {
+    return Optional.ofNullable(users.remove(id));
   }
 }
