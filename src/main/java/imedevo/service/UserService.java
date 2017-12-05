@@ -11,25 +11,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 @AllArgsConstructor
 public class UserService {
 
 
-  private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
 
-  public List<User> getAll() {
-    return new ArrayList<>(userRepository.findAll());
-  }
-  public Optional<User> getById(Integer id) {
-    return userRepository.findById(id);
-  }
-  public User save(User user) {
-    return userRepository.save(user);
-  }
+    public List<User> getAll() {
+        return new ArrayList<>(userRepository.findAll());
+    }
 
-  public Optional<User> delete(Integer id) {
-    return userRepository.delete(id);
-  }
+    public Optional<User> getById(Integer id) {
+        return userRepository.findById(id);
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    public Optional<User> delete(Integer id) {
+        return userRepository.delete(id);
+    }
 
 }

@@ -20,46 +20,47 @@ import imedevo.service.UserService;
 @AllArgsConstructor
 public class UserController {
 
-  private final UserService userService;
+    private final UserService userService;
 
 
-  @GetMapping("/users")
-  public List<User> getAllUsers() {
-    return userService.getAll();
-  }
+    @GetMapping("/users")
+    public List<User> getAllUsers() {
+        return userService.getAll();
+    }
 
 
-  @GetMapping("/users/{id}")
-  public ResponseEntity<?> getUserById(@PathVariable Integer id) {
-    Optional<User> mayBeUser = userService.getById(id);
+    @GetMapping("/users/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Integer id) {
+        Optional<User> mayBeUser = userService.getById(id);
 
-    return mayBeUser.map(Object.class::cast)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.badRequest()
-                    .body(new ErrorBody("there is no user with ID = " + id)));
-  }
-  @PostMapping("/users")
-  public ResponseEntity<Void> createUser(@RequestBody User user) {
+        return mayBeUser.map(Object.class::cast)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest()
+                        .body(new ErrorBody("there is no user with ID = " + id)));
+    }
 
-    User saved = userService.save(user);
+    @PostMapping("/users")
+    public ResponseEntity<Void> createUser(@RequestBody User user) {
 
-    return ResponseEntity.created(URI.create("/users/" + saved.getId())).build();
-  }
+        User saved = userService.save(user);
 
-  @PutMapping("/users/{id}")
-  public void updateUser(@PathVariable Integer id,
-                                     @RequestBody User user) {
+        return ResponseEntity.created(URI.create("/users/" + saved.getId())).build();
+    }
 
-    user.setId(id);
-    userService.save(user);
-  }
+    @PutMapping("/users/{id}")
+    public void updateUser(@PathVariable Integer id,
+                           @RequestBody User user) {
 
-  @DeleteMapping("/users/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteUser(@PathVariable Integer id) {
+        user.setId(id);
+        userService.save(user);
+    }
 
-    userService.delete(id)
-            .orElseThrow(NoSuchUserException::new);
+    @DeleteMapping("/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable Integer id) {
 
-  }
+        userService.delete(id)
+                .orElseThrow(NoSuchUserException::new);
+
+    }
 }
