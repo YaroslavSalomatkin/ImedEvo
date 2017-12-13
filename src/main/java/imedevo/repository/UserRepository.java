@@ -1,11 +1,14 @@
 package imedevo.repository;
 
-import imedevo.model.User;
-
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import imedevo.httpStatuses.NoSuchUserException;
+import imedevo.httpStatuses.UserAlreadyExistsException;
+import imedevo.model.User;
 
 @Repository
 public class UserRepository {
@@ -59,45 +62,56 @@ public class UserRepository {
     users.add(user);
   }
 
-    private AtomicInteger counter = new AtomicInteger(1);
+  public List<User> findAll() {
+    return users;
+  }
 
-
-    public Collection<User> findAll() {
-        return users.values();
-    }
-
-    public Optional<User> findById(Integer id) {
-        return Optional.ofNullable(users.get(id));
-    }
-
-    public User save(User user) {
-
-        if (user.getId() == null) {
-            user.setId(counter.incrementAndGet());
-        }
-
-        users.put(user.getId(), user);
-
+  public User findById(long id) {
+    for (User user : users) {
+      if (user.getId() == id) {
         return user;
+      }
     }
+    throw new NoSuchUserException();
+  }
 
-    public Optional<User> delete(Integer id) {
-        return Optional.ofNullable(users.remove(id));
+  public User save(User newUser) {
+    for (User user : users) {
+      if (user.getEmail().equals(newUser.getEmail())) {
+        throw new UserAlreadyExistsException();
+      }
     }
+    users.add(newUser);
+    return newUser;
+  }
 
-    public User getUser(User user) {
-        // TODO check, if user with such e-mail is exists
-        Iterator<User> iterator = users.iterator();
-        while (iterator.hasNext()) {
-            User u1 = iterator.next();
-            if (u1.getEmail().equals(user.getEmail())) {
-                return u1;
-            }
-        }
-        return null;
+  public User updateUser(User updatedUser) {
+    for (User user : users) {
+      if (user.getId() == updatedUser.getId()) {
+        users.remove(user);
+        users.add(updatedUser);
+        return updatedUser;
+      }
     }
+    throw new NoSuchUserException();
+  }
 
-    public void saveNewUserInDB(User user){
-        users.add(user);
+  public void delete(long id) {
+    if (users.contains(findById(id))) {
+      users.remove(findById(id));
+    } else {
+      throw new NoSuchUserException();
     }
+  }
+
+  public User getUserByEmail(User user) {
+    Iterator<User> iterator = users.iterator();
+    while (iterator.hasNext()) {
+      User u1 = iterator.next();
+      if (u1.getEmail().equals(user.getEmail())) {
+        return u1;
+      }
+    }
+    return null;
+  }
 }

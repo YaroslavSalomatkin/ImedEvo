@@ -9,7 +9,6 @@ public class User {
   private String password;
   private int birthDate;
 
-
   public User() {
     id = 0;
     name = "None";
@@ -79,6 +78,6 @@ public class User {
   @Override
   public String toString() {
     return "{ name:" + name + ", " +
-            "e-mail: " + email + " }";
+        "e-mail: " + email + " }";
   }
 }
