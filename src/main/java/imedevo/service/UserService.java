@@ -11,13 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-@AllArgsConstructor
+@Service
 public class UserService {
 
 
-    private final UserRepository userRepository;
+    private  UserRepository userRepository;
 
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public List<User> getAll() {
         return new ArrayList<>(userRepository.findAll());
