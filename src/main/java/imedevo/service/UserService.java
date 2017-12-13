@@ -1,40 +1,36 @@
 package imedevo.service;
 
-import imedevo.model.User;
-import imedevo.repository.UserRepository;
-
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
+import imedevo.model.User;
+import imedevo.repository.UserRepository;
+
 @Service
 public class UserService {
 
+  @Autowired
+  private UserRepository userRepository;
 
-    private  UserRepository userRepository;
+  public List<User> getAll() {
+    return userRepository.findAll();
+  }
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  public User getById(long id) {
+    return userRepository.findById(id);
+  }
 
-    public List<User> getAll() {
-        return new ArrayList<>(userRepository.findAll());
-    }
+  public User save(User user) {
+    return userRepository.save(user);
+  }
 
-    public Optional<User> getById(Integer id) {
-        return userRepository.findById(id);
-    }
+  public User updateUser(User updatedUser) {
+    return userRepository.updateUser(updatedUser);
+  }
 
-    public User save(User user) {
-        return userRepository.save(user);
-    }
-
-    public Optional<User> delete(Integer id) {
-        return userRepository.delete(id);
-    }
-
+  public void delete(long id) {
+    userRepository.delete(id);
+  }
 }

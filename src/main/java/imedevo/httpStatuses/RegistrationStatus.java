@@ -1,4 +1,4 @@
-package imedevo.entities;
+package imedevo.httpStatuses;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
