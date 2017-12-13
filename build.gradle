@@ -28,6 +28,7 @@ targetCompatibility = 1.8
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
+    compileOnly "org.projectlombok:lombok:1.16.16"
     // tag::actuator[]
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile('org.springframework.boot:spring-boot-starter-mail')
