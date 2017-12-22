@@ -51,9 +51,9 @@ public class RegistrationService {
     if (isCorrectPassword(user)) {
       userRepository.save(user);
       try {
-        mailSenderService.sendMail(user.getEmail(),
-            "Registration in Imed",
-            "Registration cpmpleted succesfully");
+//        mailSenderService.sendMail(user.getEmail(),
+//            "Registration in Imed",
+//            "Registration cpmpleted succesfully");
       } catch (MailException e) {
         logger.error("Error while sending email registration: " + e);
       }
@@ -68,7 +68,7 @@ public class RegistrationService {
   }
 
   public User getUserByEmail(User user) {
-    return userRepository.getUserByEmail(user);
+    return userRepository.findByEmail(user.getEmail());
   }
 
   public boolean isEmailValid(String email) {
