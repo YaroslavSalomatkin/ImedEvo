@@ -7,6 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ImedEvoApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(ImedEvoApplication.class, args);
+    SpringApplication.run(new Object[]{ImedEvoApplication.class, ScheduledTasks.class}, args);
   }
 }
