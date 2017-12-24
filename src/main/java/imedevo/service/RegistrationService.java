@@ -1,5 +1,8 @@
 package imedevo.service;
 
+import imedevo.httpStatuses.UserStatus;
+import imedevo.model.User;
+import imedevo.repository.UserRepository;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import imedevo.httpStatuses.RegistrationStatus;
-import imedevo.model.User;
-import imedevo.repository.UserRepository;
 
 @Service
 public class RegistrationService {
@@ -29,22 +28,22 @@ public class RegistrationService {
   public Map<String, Object> createNewUserInDB(User user) {
     Map<String, Object> map = new HashMap<>();
     if (getUserByEmail(user) != null) {
-      map.put("status", RegistrationStatus.ERROR_DUPLICATE_USERS);
+      map.put("status", UserStatus.REGISTRATION_ERROR_DUPLICATE_USERS);
       return map;
     }
 
     if (user.getEmail().isEmpty()) {
-      map.put("status", RegistrationStatus.ERROR_EMPTY_EMAIL);
+      map.put("status", UserStatus.REGISTRATION_ERROR_EMPTY_EMAIL);
       return map;
     }
 
     if (!isEmailValid(user.getEmail())) {
-      map.put("status", RegistrationStatus.ERROR_INCORRECT_EMAIL);
+      map.put("status", UserStatus.REGISTRATION_ERROR_INCORRECT_EMAIL);
       return map;
     }
 
     if (user.getPhone().isEmpty()) {
-      map.put("status", RegistrationStatus.ERROR_EMPTY_PHONE);
+      map.put("status", UserStatus.REGISTRATION_ERROR_EMPTY_PHONE);
       return map;
     }
 
@@ -58,12 +57,12 @@ public class RegistrationService {
         logger.error("Error while sending email registration: " + e);
       }
 
-      map.put("status", RegistrationStatus.USER_REGISTRATION_OK);
+      map.put("status", UserStatus.REGISTRATION_OK);
       map.put("user", user);
       return map;
     }
 
-    map.put("status", RegistrationStatus.ERROR_INCORRECT_PASSWORD);
+    map.put("status", UserStatus.REGISTRATION_ERROR_INCORRECT_PASSWORD);
     return map;
   }
 
