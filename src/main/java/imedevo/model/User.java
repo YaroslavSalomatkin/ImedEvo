@@ -1,31 +1,87 @@
 package imedevo.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "users")
 public class User {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-  private String name;
-  private String phone;
-  private String email;
-  private String password;
-  private int birthDate;
 
+  @Column(name = "first_name")
+  private String firstName;
+
+  @Column(name = "last_name")
+  private String lastName;
+
+  @Column(name = "phone")
+  private String phone;
+
+  @Column(name = "email")
+  private String email;
+
+  @Column(name = "password")
+  private String password;
+
+  @Column(name = "city")
+  private String city;
+
+  @Column(name = "house")
+  private int house;
+
+  @Column(name = "street")
+  private String street;
+
+  @Column(name = "patronymic")
+  private String patronymic;
+
+  @Column(name = "sex")
+  private String sex;
+
+  @Column(name = "birth_date")
+  private String birthDate;
 
   public User() {
-    id = 0;
-    name = "None";
-    phone = "None";
-    email = "None";
-    password = "None";
-    birthDate = 0;
   }
 
-  public User(long id, String name, String phone, String email, String password, int birthDate) {
-    this.id = id;
-    this.name = name;
+  public User(String firstName, String lastName, String phone, String email,
+      String password, String city, int house, String street, String patronymic, String sex,
+      String birthDate) {
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.phone = phone;
     this.email = email;
     this.password = password;
+    this.city = city;
+    this.house = house;
+    this.street = street;
+    this.patronymic = patronymic;
+    this.sex = sex;
     this.birthDate = birthDate;
+  }
+
+  @Override
+  public String toString() {
+    return "User{" +
+        "id=" + id +
+        ", firstName='" + firstName + '\'' +
+        ", lastName='" + lastName + '\'' +
+        ", phone='" + phone + '\'' +
+        ", email='" + email + '\'' +
+        ", city='" + city + '\'' +
+        ", house=" + house +
+        ", street='" + street + '\'' +
+        ", patronymic='" + patronymic + '\'' +
+        ", sex='" + sex + '\'' +
+        ", birthDate='" + birthDate + '\'' +
+        '}';
   }
 
   public long getId() {
@@ -36,12 +92,20 @@ public class User {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getFirstName() {
+    return firstName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
   public String getPhone() {
@@ -60,14 +124,6 @@ public class User {
     this.email = email;
   }
 
-  public int getBirthDate() {
-    return birthDate;
-  }
-
-  public void setBirthDate(int birthDate) {
-    this.birthDate = birthDate;
-  }
-
   public String getPassword() {
     return password;
   }
@@ -76,9 +132,51 @@ public class User {
     this.password = password;
   }
 
-  @Override
-  public String toString() {
-    return "{ name:" + name + ", " +
-            "e-mail: " + email + " }";
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public int getHouse() {
+    return house;
+  }
+
+  public void setHouse(int house) {
+    this.house = house;
+  }
+
+  public String getStreet() {
+    return street;
+  }
+
+  public void setStreet(String street) {
+    this.street = street;
+  }
+
+  public String getPatronymic() {
+    return patronymic;
+  }
+
+  public void setPatronymic(String patronymic) {
+    this.patronymic = patronymic;
+  }
+
+  public String getSex() {
+    return sex;
+  }
+
+  public void setSex(String sex) {
+    this.sex = sex;
+  }
+
+  public String getBirthDate() {
+    return birthDate;
+  }
+
+  public void setBirthDate(String birthDate) {
+    this.birthDate = birthDate;
   }
 }
