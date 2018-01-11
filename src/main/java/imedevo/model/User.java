@@ -1,10 +1,17 @@
 package imedevo.model;
 
+import java.sql.Date;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -15,11 +22,14 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  @Column(name = "last_name")
+  private String lastName;
+
   @Column(name = "first_name")
   private String firstName;
 
-  @Column(name = "last_name")
-  private String lastName;
+  @Column(name = "patronymic")
+  private String patronymic;
 
   @Column(name = "phone")
   private String phone;
@@ -34,28 +44,33 @@ public class User {
   private String city;
 
   @Column(name = "house")
-  private int house;
+  private String house;
 
   @Column(name = "street")
   private String street;
-
-  @Column(name = "patronymic")
-  private String patronymic;
 
   @Column(name = "sex")
   private String sex;
 
   @Column(name = "birth_date")
-  private String birthDate;
+  private Date birthDate;
+
+  @OneToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+      name = "user_roles",
+      joinColumns = @JoinColumn(name = "role_id"),
+      inverseJoinColumns = @JoinColumn(name = "user_id"))
+  private List<UserRole> userRoles;
 
   public User() {
   }
 
   public User(String firstName, String lastName, String phone, String email,
-      String password, String city, int house, String street, String patronymic, String sex,
-      String birthDate) {
-    this.firstName = firstName;
+      String password, String city, String house, String street, String patronymic, String sex,
+      Date birthDate) {
     this.lastName = lastName;
+    this.firstName = firstName;
+    this.patronymic = patronymic;
     this.phone = phone;
     this.email = email;
     this.password = password;
@@ -140,11 +155,11 @@ public class User {
     this.city = city;
   }
 
-  public int getHouse() {
+  public String getHouse() {
     return house;
   }
 
-  public void setHouse(int house) {
+  public void setHouse(String house) {
     this.house = house;
   }
 
@@ -172,11 +187,19 @@ public class User {
     this.sex = sex;
   }
 
-  public String getBirthDate() {
+  public Date getBirthDate() {
     return birthDate;
   }
 
-  public void setBirthDate(String birthDate) {
+  public void setBirthDate(Date birthDate) {
     this.birthDate = birthDate;
+  }
+
+  public List<UserRole> getUserRoles() {
+    return userRoles;
+  }
+
+  public void setUserRoles(List<UserRole> userRoles) {
+    this.userRoles = userRoles;
   }
 }
