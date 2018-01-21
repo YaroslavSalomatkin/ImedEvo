@@ -35,7 +35,11 @@ public class UserService {
   private RolesService rolesService;
 
   public List<User> getAll() {
-    return (List<User>) userRepository.findAll();
+    List<User> listOfUsers = (List<User>) userRepository.findAll();
+    for (User user : listOfUsers) {
+      user.setUserRoles(rolesService.getUserRoles(user.getId()));
+    }
+    return listOfUsers;
   }
 
   public User getById(long id) throws UserNotFoundException {
@@ -65,7 +69,6 @@ public class UserService {
       map.put("status", UserStatus.REGISTRATION_ERROR_INCORRECT_PASSWORD);
       return map;
     }
-
     map.put("status", UserStatus.ADD_USER_OK);
     map.put("user", userRepository.save(user));
 
@@ -122,6 +125,7 @@ public class UserService {
 //    }
 
     if (userRepository.findOne(id) != null) {
+      userRoleRepository.delete(userRoleRepository.findByUserId(id));
       userRepository.delete(id);
     } else {
       throw new UserNotFoundException();
