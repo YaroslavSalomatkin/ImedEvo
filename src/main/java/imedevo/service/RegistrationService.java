@@ -65,7 +65,8 @@ public class RegistrationService {
       return map;
     }
 
-    if (user.getFirstName() == null || user.getLastName() == null) {
+    if (user.getFirstName() == null || user.getLastName() == null
+        || user.getFirstName().length() < 2 || user.getLastName().length() < 2) {
       map.put(status, UserStatus.REGISTRATION_ERROR_EMPTY_FIRSTNAME_OR_LASTNAME);
       return map;
     }
