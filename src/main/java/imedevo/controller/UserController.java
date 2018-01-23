@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
+import imedevo.httpStatuses.AccessDeniedException;
+import imedevo.httpStatuses.UserNotFoundException;
 import imedevo.model.User;
 import imedevo.service.UserService;
 
@@ -28,22 +31,23 @@ public class UserController {
   }
 
   @GetMapping("/{id}")
-  public User getUserById(@PathVariable long id) {
+  public User getUserById(@PathVariable long id) throws UserNotFoundException {
     return userService.getById(id);
   }
 
   @PostMapping("/createuser")
-  public User createUser(@RequestBody User user) {
+  public Map<String, Object> createUser(@RequestBody User user) {
     return userService.save(user);
   }
 
   @PutMapping("/{id}")
-  public User updateUser(@RequestBody User user) {
+  public Map<String, Object> updateUser(@RequestBody User user) {
     return userService.updateUser(user);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteUser(@PathVariable long id) {
+  public void deleteUser(@PathVariable long id)
+      throws UserNotFoundException, AccessDeniedException {
     userService.delete(id);
   }
 }
