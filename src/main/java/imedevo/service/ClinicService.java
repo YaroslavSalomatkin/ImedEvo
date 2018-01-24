@@ -2,6 +2,7 @@ package imedevo.service;
 
 
 import imedevo.httpStatuses.DocStatus;
+import imedevo.httpStatuses.HospitalStatus;
 import imedevo.httpStatuses.NoSuchClinicException;
 import imedevo.httpStatuses.UserStatus;
 import imedevo.model.Clinic;
@@ -42,25 +43,25 @@ public class ClinicService {
         Map<String, Object> map = new HashMap<>();
 
             if (clinic.getLogo() == null) {
-                map.put("status", DocStatus.REGISTRATION_ERROR_EMPTY_LOGO);
+                map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_LOGO);
                 return map;
             }
 
             if (clinic.getClinicName() == null) {
-                map.put("status", DocStatus.REGISTRATION_ERROR_EMPTY_NAME);
+                map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
                 return map;
             }
 
             if (clinic.getMedicalLicense() == null) {
-                map.put("status", DocStatus.REGISTRATION_ERROR_EMPTY_MEDICAL_LECENSE);
+                map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_MEDICAL_LECENSE);
                 return map;
             }
 
             if (clinic.getAddress() == null) {
-                map.put("status", DocStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
+                map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
                 return map;
             }
-            map.put("status", DocStatus.REGISTRATION_OK);
+            map.put("status", HospitalStatus.REGISTRATION_OK);
             map.put("clinic", clinicRepository.save(clinic));
             return map;
         }
@@ -71,13 +72,13 @@ public class ClinicService {
             if (updatedClinic.getEmail() != null) {
                 Clinic checkClinicFromDb = clinicRepository.findByEmail(updatedClinic.getEmail());
                 if (checkClinicFromDb != null && updatedClinic.getId() != checkClinicFromDb.getId()) {
-                    map.put("status", DocStatus.EDIT_PROFILE_ERROR);
+                    map.put("status", HospitalStatus.EDIT_PROFILE_ERROR);
                     return map;
                 }
             }
                 Clinic clinicFromDb = clinicRepository.findOne(updatedClinic.getId());
                 if (clinicFromDb == null) {
-                    map.put("status", DocStatus.NOT_FOUND);
+                    map.put("status", HospitalStatus.NOT_FOUND);
                 } else {
                     Field[] fields = updatedClinic.getClass().getDeclaredFields();
                     AccessibleObject.setAccessible(fields, true);
@@ -87,7 +88,7 @@ public class ClinicService {
                             ReflectionUtils.setField(field, clinicFromDb, userFromDbValue);
                         }
                     }
-                    map.put("status", DocStatus.EDIT_PROFILE_SUCCESS);
+                    map.put("status", HospitalStatus.EDIT_PROFILE_SUCCESS);
                     map.put("clinic", clinicRepository.save(clinicFromDb));
                 }
             return map;

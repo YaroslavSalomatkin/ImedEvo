@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum DocStatus {
-    NOT_FOUND(404, "Clinic not found"),
 
     // registration status
     REGISTRATION_OK(800, "Registration success. Check your e-mail."),
@@ -15,9 +14,6 @@ public enum DocStatus {
     REGISTRATION_ERROR_EMPTY_PHONE(805, "Error. Empty phone."),
     REGISTRATION_ERROR_EMPTY_BIRTHADAY(806, "Error. Empty Birthday."),
     REGISTRATION_ERROR_EMPTY_NAME(807, "Error. Empty name."),
-    REGISTRATION_ERROR_EMPTY_MEDICAL_LECENSE(808, "Error. Empty medical license."),
-    REGISTRATION_ERROR_EMPTY_ADDRESS(809, "Error. Empty address."),
-    REGISTRATION_ERROR_EMPTY_LOGO(810, "Error. Empty logo."),
     REGISTRATION_ERROR_DUPLICATE_EMAILS(815, "Clinic with such e-mail already exist"),
 
 
