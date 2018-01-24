@@ -2,14 +2,12 @@ package imedevo.controller;
 import imedevo.httpStatuses.NoSuchClinicException;
 import imedevo.model.Clinic;
 import imedevo.service.ClinicService;
-import imedevo.util.ErrorBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/clinics")
@@ -26,14 +24,10 @@ public class ClinicController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getClinicById(@PathVariable Long id) {
-        Optional<Clinic> mayBeClinic = clinicService.getById(id);
-
-        return mayBeClinic.map(Object.class::cast)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.badRequest()
-                        .body(new ErrorBody("there is no clinic with ID = " + id)));
+    public Clinic getClinicById(@PathVariable Long id) throws NoSuchClinicException {
+        return clinicService.getById(id);
     }
+
 
     @PostMapping("/createclinic")
     public Map<String, Object> createClinic(@RequestBody Clinic clinic) {

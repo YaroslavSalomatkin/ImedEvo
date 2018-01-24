@@ -2,6 +2,7 @@ package imedevo.service;
 
 
 import imedevo.httpStatuses.DocStatus;
+import imedevo.httpStatuses.NoSuchClinicException;
 import imedevo.httpStatuses.UserStatus;
 import imedevo.model.Clinic;
 import imedevo.model.User;
@@ -28,8 +29,12 @@ public class ClinicService {
         return clinicRepository.findAll();
     }
 
-    public Optional<Clinic> getById(Long id) {
-        return clinicRepository.findById(id);
+    public Clinic getById(long id) throws NoSuchClinicException {
+        Clinic clinic = clinicRepository.findOne(id);
+        if (clinic == null) {
+            throw new NoSuchClinicException();
+        }
+        return clinic;
     }
 
     @Transactional
