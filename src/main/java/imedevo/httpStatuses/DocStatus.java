@@ -40,7 +40,7 @@ public enum DocStatus {
     SEE_TIME_REFUSE(851, "You was refuse your patient time."),
 
     // delete profile
-    DELETE_PROFILE_SUCCESS(860, "You profile was deleted.")
+    DELETE_PROFILE_SUCCESS(860, "Your profile was deleted.")
     ;
 
     private int code;
