@@ -14,21 +14,15 @@ public enum DocStatus {
     REGISTRATION_ERROR_EMPTY_PHONE(805, "Error. Empty phone."),
     REGISTRATION_ERROR_EMPTY_BIRTHADAY(806, "Error. Empty Birthday."),
     REGISTRATION_ERROR_EMPTY_NAME(807, "Error. Empty name."),
-    REGISTRATION_ERROR_DUPLICATE_EMAILS(815, "Clinic with such e-mail already exist"),
-
-
 
     // login status
-    LOGIN_OK(811, "Login success."),
-    LOGIN_USER_NOT_FOUND(812, "User with your credentials not found."),
-    LOGIN_BAD_LOGIN(813, "Login success."),
-    LOGIN_BAD_PASSWORD(814, "Login success."),
-
+    LOGIN_OK(810, "Login success."),
+    LOGIN_USER_NOT_FOUND(811, "User with your credentials not found."),
+    LOGIN_BAD_LOGIN(812, "Login success."),
+    LOGIN_BAD_PASSWORD(813, "Login success."),
 
     //logout status
     LOGOUT_OK(820, "Login success."),
-
-
 
     //edit profile status
     EDIT_PROFILE_SUCCESS(830, "Your profile changed successfully."),
