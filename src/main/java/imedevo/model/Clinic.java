@@ -32,13 +32,16 @@ public class Clinic {
     private Double  coordinatesLatitude;
     @Column(name = "coordinates_Longitude")
     private Double  coordinatesLongitude;
+    @Column(name = "logo")
+    private String logo;
     public Clinic(){
 
     }
 
-    public Clinic(Double rating, String clinicName, String medicalLicense, String address,
-                  String phoneNumber, String email, String daysOfAdmission, String workingHours,
-                  String description, String services,Double  coordinatesLatitude,Double  coordinatesLongitude) {
+    public Clinic(Double rating, String clinicName, String medicalLicense,
+                  String address, String phoneNumber, String email,
+                  String daysOfAdmission, String workingHours, String description,
+                  String services, Double coordinatesLatitude, Double coordinatesLongitude, String logo) {
         this.rating = rating;
         this.clinicName = clinicName;
         this.medicalLicense = medicalLicense;
@@ -49,6 +52,9 @@ public class Clinic {
         this.workingHours = workingHours;
         this.description = description;
         this.services = services;
+        this.coordinatesLatitude = coordinatesLatitude;
+        this.coordinatesLongitude = coordinatesLongitude;
+        this.logo = logo;
     }
 
     @Override
@@ -67,6 +73,7 @@ public class Clinic {
                 ", services='" + services + '\'' +
                 ", coordinatesLatitude=" + coordinatesLatitude +
                 ", coordinatesLongitude=" + coordinatesLongitude +
+                ", logo='" + logo + '\'' +
                 '}';
     }
 
@@ -172,5 +179,13 @@ public class Clinic {
 
     public void setCoordinatesLongitude(Double coordinatesLongitude) {
         this.coordinatesLongitude = coordinatesLongitude;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 }

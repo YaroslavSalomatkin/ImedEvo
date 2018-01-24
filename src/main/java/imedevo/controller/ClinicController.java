@@ -1,5 +1,4 @@
 package imedevo.controller;
-import imedevo.httpStatuses.DocStatus;
 import imedevo.httpStatuses.NoSuchClinicException;
 import imedevo.model.Clinic;
 import imedevo.service.ClinicService;
@@ -8,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -37,17 +36,14 @@ public class ClinicController {
     }
 
     @PostMapping("/createclinic")
-    public ResponseEntity<Void> createClinic(@RequestBody Clinic clinic) {
-
-        Clinic saved = clinicService.save(clinic);
-
-        return ResponseEntity.created(URI.create("/createclinic/" + saved.getId())).build();
+    public Map<String, Object> createClinic(@RequestBody Clinic clinic) {
+        return clinicService.save(clinic);
     }
-    @PutMapping("/{id}")
-    public void updateClinic(@PathVariable Long id, @RequestBody Clinic clinic) {
-        clinic.setId(id);
 
-        clinicService.save(clinic);
+    @PutMapping("/{id}")
+    public Map<String, Object> updateClinic(@PathVariable Long id,@RequestBody Clinic clinic) {
+        clinic.setId(id);
+        return clinicService.updateClinic(clinic);
     }
 
     @DeleteMapping("/{id}")
