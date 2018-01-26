@@ -2,8 +2,8 @@ package imedevo.controller;
 
 import imedevo.httpStatuses.AccessDeniedException;
 import imedevo.httpStatuses.UserNotFoundException;
-import imedevo.model.User;
-import imedevo.service.UserService;
+import imedevo.model.Doctor;
+import imedevo.service.DoctorService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,36 +16,42 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for (@link Doctor) class.
+ */
+
 @RestController
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/doctors")
+public class DoctorController {
 
   @Autowired
-  private UserService userService;
+  DoctorService doctorService;
 
   @GetMapping("/getall")
-  public List<User> getAllUsers() {
-    return userService.getAll();
+  public List<Doctor> getAllDoctors() {
+    return doctorService.getAll();
   }
 
   @GetMapping("/{id}")
-  public User getUserById(@PathVariable long id) throws UserNotFoundException {
-    return userService.getById(id);
+  public Doctor getDoctorById(@PathVariable long id) throws UserNotFoundException {
+    return doctorService.getById(id);
   }
 
-  @PostMapping("/createuser")
-  public Map<String, Object> createUser(@RequestBody User user) {
-    return userService.save(user);
+  @PostMapping("/createdoctor")
+  public Map<String, Object> createDoctor(@RequestBody Doctor doctor) throws UserNotFoundException {
+    return doctorService.save(doctor);
   }
 
-  @PutMapping("/{id}")
-  public Map<String, Object> updateUser(@RequestBody User user) {
-    return userService.updateUser(user);
+  @PutMapping("/updatedoctor")
+  public Map<String, Object> updateDoctor(@RequestBody Doctor doctor)
+      throws UserNotFoundException {
+    return doctorService.updateDoctor(doctor);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteUser(@PathVariable long id)
+  public void deleteDoctor(@PathVariable long id)
       throws UserNotFoundException, AccessDeniedException {
-    userService.delete(id);
+    doctorService.delete(id);
   }
+
 }
