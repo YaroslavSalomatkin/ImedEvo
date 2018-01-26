@@ -1,15 +1,5 @@
 package imedevo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
-
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import imedevo.httpStatuses.AccessDeniedException;
 import imedevo.httpStatuses.UserNotFoundException;
 import imedevo.httpStatuses.UserStatus;
@@ -18,7 +8,15 @@ import imedevo.model.User;
 import imedevo.model.UserRole;
 import imedevo.repository.UserRepository;
 import imedevo.repository.UserRoleRepository;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
 //import org.springframework.security.core.context.SecurityContextHolder;
 
