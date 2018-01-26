@@ -21,11 +21,8 @@ public enum DocStatus {
     LOGIN_BAD_LOGIN(812, "Login success."),
     LOGIN_BAD_PASSWORD(813, "Login success."),
 
-
     //logout status
     LOGOUT_OK(820, "Login success."),
-
-
 
     //edit profile status
     EDIT_DOCTOR_PROFILE_SUCCESS(830, "Your doctor profile changed successfully."),
@@ -40,7 +37,7 @@ public enum DocStatus {
     SEE_TIME_REFUSE(851, "You was refuse your patient time."),
 
     // delete profile
-    DELETE_PROFILE_SUCCESS(860, "You profile was deleted.")
+    DELETE_PROFILE_SUCCESS(860, "Your profile was deleted.")
     ;
 
     private int code;
