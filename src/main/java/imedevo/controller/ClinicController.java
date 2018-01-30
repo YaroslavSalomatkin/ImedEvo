@@ -23,7 +23,7 @@ public class ClinicController {
 
     }
 
-    @GetMapping("/getclinic/{id}")
+    @GetMapping("/{id}")
     public Clinic getClinicById(@PathVariable Long id) throws NoSuchClinicException {
         return clinicService.getById(id);
     }
