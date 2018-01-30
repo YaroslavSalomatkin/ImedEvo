@@ -81,11 +81,11 @@ public class UserService {
     Map<String, Object> map = new HashMap<>();
 
     /** this is security checking */
-    if (userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
-        .getId() != updatedUser.getId()) {
-      map.put("status", UserStatus.ACCESS_DENIED);
-      return map;
-    }
+//    if (userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+//        .getId() != updatedUser.getId()) {
+//      map.put("status", UserStatus.ACCESS_DENIED);
+//      return map;
+//    }
 
     if (updatedUser.getEmail() != null) {
       User checkUserFromDb = userRepository.findByEmail(updatedUser.getEmail());
