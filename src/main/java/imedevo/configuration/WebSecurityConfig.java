@@ -34,14 +34,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "doctors/deletedoctor/*", "clinics/createclinic", "clinics/updateclinic",
             "clinics/deleteclinic/*")
         .hasAuthority("CLINIC_ADMIN")
-        .antMatchers("/users/getall", "/users/*", "/users/createuser", "/users/updateuser",
-            "/users/deleteuser/*", "/users/createdoctor", "/doctors/updatedoctor",
-            "doctors/deletedoctor/*", "clinics/createclinic", "clinics/updateclinic",
-            "clinics/deleteclinic/*")
+        .antMatchers("/users/**", "/doctors/**", "clinics/**")
         .hasAuthority("SUPER_ADMIN")
         .and()
-        .logout().logoutUrl("/services/users/logout")
-        .clearAuthentication(true).logoutSuccessUrl("/services/users/login")
+        .logout().logoutUrl("/users/logout")
+        .clearAuthentication(true).logoutSuccessUrl("/users/login")
         .and()
         .httpBasic()
         .and()
