@@ -35,15 +35,29 @@ public enum UserStatus {
   EDIT_PROFILE_ERROR(731, "Error while editing profile"),
   ADD_USER_OK(732, "Adding user in DataBase OK"),
 
-  // comments and  rating
+  // comments and rating
   ADD_COMMENT_SUCCESS(741, "Comment added"),
   ADD_RATING_SUCCESS(742, "Rating added"),
   EDIT_COMMENT_SUCCESS(743, "Comment edited"),
   EDIT_RATING_SUCCESS(744, "Rating edited"),
+  DELETE_COMMENT(745, "Comment deleted"),
+  COMMENT_INVALID(746, "Comment invalid"),
+  COMMENT_NOT_FOUND(747, "Comment not found"),
 
   //sign up for an appointment with the doctor,
   SEE_DOC_SUCCESS(750, "Doctor approved your visit time"),
   SEE_DOC_REFUSE(751, "Doctor cancelled your visit time"),
+  ADD_NEW_APPOINTMENT_OK(752, "Appointment added"),
+  APPOINTMENT_EDITED_OK(753, "Appointment updated"),
+  APPOINTMENT_DELETE(754, "Appointment deleted"),
+  APPOINTMENT_INVALID(755, "Appointment invalid"),
+  APPOINTMENT_NOT_FOUND(756, "Appointment not found"),
+
+  // favourite doctors
+  FAVOURITE_DOCTOR_ADD_OK(770, "Favourite doctor added"),
+  FAVOURITE_DOCTOR_ADD_ERROR(771, "Error in the process of adding a favorite doctor"),
+  FAVOURITE_DOCTOR_DELETE_OK(772, "Favourite doctor deleted"),
+  FAVOURITE_DOCTOR_NOT_FOUND(773, "Favourite doctor not found"),
 
   // deleting profile
   DELETE_PROFILE_SUCCESS(760, "Profile deleted");

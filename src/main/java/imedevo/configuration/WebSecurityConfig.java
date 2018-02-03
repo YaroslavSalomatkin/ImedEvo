@@ -22,28 +22,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
-        .csrf().disable()
         .authorizeRequests()
-        .antMatchers("/", "/home").permitAll()
-        .antMatchers("/users/login", "users/registration", "/doctors/getall", "/doctors/getdoctor/*",
-            "/clinics/getall", "/clinics/getclinic/*", "/forgot/**", "/clients/**")
+        .antMatchers("/users/login", "users/registration", "/doctors/getall", "/doctors/*",
+            "/clinics/getall", "/clinics/*", "/forgot/reset", "/forgot/newpassword")
         .permitAll()
-        .antMatchers("/users/getuser/*", "/users/updateuser").hasAuthority("USER")
-        .antMatchers("/doctors/updatedoctor").hasAuthority("DOCTOR")
-        .antMatchers("/doctors/createdoctor", "/doctors/updatedoctor",
+        .antMatchers("/users/*", "/users/updateuser")
+        .hasAuthority("USER")
+        .antMatchers("/doctors/updatedoctor")
+        .hasAuthority("DOCTOR")
+        .antMatchers("/users/createdoctor", "/doctors/updatedoctor",
             "doctors/deletedoctor/*", "clinics/createclinic", "clinics/updateclinic",
-            "clinics/deleteclinic/*").hasAuthority("CLINIC_ADMIN")
-        .antMatchers("/users/getall", "/users/getuser/*", "/users/createuser", "/users/updateuser",
-            "/users/deleteuser/*", "/users/createdoctor", "/doctors/updatedoctor",
-            "doctors/deletedoctor/*", "clinics/createclinic", "clinics/updateclinic",
-            "clinics/deleteclinic/*").hasAuthority("SUPER_ADMIN")
-//        .antMatchers("/**").hasAuthority("SYSTEM")
+            "clinics/deleteclinic/*")
+        .hasAuthority("CLINIC_ADMIN")
+        .antMatchers("/users/**", "/doctors/**", "clinics/**")
+        .hasAuthority("SUPER_ADMIN")
         .and()
         .logout().logoutUrl("/users/logout")
         .clearAuthentication(true).logoutSuccessUrl("/users/login")
         .and()
         .httpBasic()
-        .and();
+        .and()
+        .csrf().disable();
   }
 
   @Autowired
