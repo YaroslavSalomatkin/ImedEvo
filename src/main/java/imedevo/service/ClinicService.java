@@ -46,6 +46,10 @@ public class ClinicService {
                 map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_LOGO);
                 return map;
             }
+        if (clinic.getEmail() == null) {
+            map.put("status", HospitalStatus.REGISTRATION_ERROR_INCORRECT_EMAIL);
+            return map;
+        }
 
             if (clinic.getClinicName() == null) {
                 map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
