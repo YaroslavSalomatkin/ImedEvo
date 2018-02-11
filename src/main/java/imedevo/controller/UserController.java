@@ -1,12 +1,14 @@
 package imedevo.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import imedevo.httpStatuses.AccessDeniedException;
 import imedevo.httpStatuses.UserNotFoundException;
 import imedevo.model.User;
 import imedevo.service.UserService;
-import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +42,14 @@ public class UserController {
     return userService.save(user);
   }
 
+  @PostMapping("/uploaduserimage")
+  public Map<String, Object> uploadUserImage(@RequestParam("user_id") long userId,
+                                             @RequestParam("file") MultipartFile imageFile){
+    return userService.uploadImage(userId, imageFile);
+  }
+
   @PutMapping("/updateuser")
+
   public Map<String, Object> updateUser(@RequestBody User user) {
     return userService.updateUser(user);
   }
