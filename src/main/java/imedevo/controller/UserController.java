@@ -57,7 +57,7 @@ public class UserController {
   @DeleteMapping("/deleteuser/{id}")
   public void deleteUser(@PathVariable long id)
       throws UserNotFoundException, AccessDeniedException {
-    userService.delete(id);
+    userService.deleteUser(id);
   }
 
   @RequestMapping(value = "/login", method = RequestMethod.POST)
