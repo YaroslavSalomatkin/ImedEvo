@@ -37,6 +37,10 @@ public class DoctorService {
   @Autowired
   RolesService rolesService;
 
+  @Autowired
+  SpecializationService specializationService;
+
+
   public List<Doctor> getAll() {
     List<Doctor> listOfDoctors = doctorRepository.findAll();
     for (Doctor doctor : listOfDoctors) {
@@ -45,12 +49,14 @@ public class DoctorService {
     return listOfDoctors;
   }
 
-  public Doctor getById(long id) throws UserNotFoundException {
+  public Map<String, Object> getById(long id) throws UserNotFoundException {
     Doctor doctor = doctorRepository.findById(id);
     if (doctor == null) {
       throw new UserNotFoundException();
     }
-    return doctor;
+    Map<String, Object> map = new HashMap<>();
+    map.put("doctor", doctor);
+    return map;
   }
 
   @Transactional
@@ -59,6 +65,31 @@ public class DoctorService {
 
     if (doctor.getUserId() == 0) {
       map.put("status", DocStatus.REGISTRATION_ERROR_INCORRECT_USER_ID);
+      return map;
+    }
+
+//    if (doctor.getSpecialization() == null ) {
+//      map.put("status", DocStatus.REGISTRATION_ERROR_INCORRECT_DOCTOR_SPECIALIZATION);
+//      return map;
+//    }
+
+    if (doctor.getDoctorQualification() == null) {
+      map.put("status", DocStatus.REGISTRATION_ERROR_EMPTY_FIELD_DOCTOR_QUALIFICATION);
+      return map;
+    }
+
+    if (doctor.getEducation() == null) {
+      map.put("status", DocStatus.REGISTRATION_ERROR_EMPTY_FIELD_DOCTOR_EDUCATION);
+      return map;
+    }
+
+    if (doctor.getPrice() == 0) {
+      map.put("status", DocStatus.REGISTRATION_ERROR_INCORRECT_PRICE_VALUE);
+      return map;
+    }
+
+    if (doctor.getWorkExperience() == 0) {
+      map.put("status", DocStatus.REGISTRATION_ERROR_INCORRECT_EXPERIENCE_VALUE);
       return map;
     }
 

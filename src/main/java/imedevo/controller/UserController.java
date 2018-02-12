@@ -1,5 +1,11 @@
 package imedevo.controller;
 
+import imedevo.httpStatuses.AccessDeniedException;
+import imedevo.httpStatuses.UserNotFoundException;
+import imedevo.model.User;
+import imedevo.service.UserService;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,14 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-import java.util.Map;
-
-import imedevo.httpStatuses.AccessDeniedException;
-import imedevo.httpStatuses.UserNotFoundException;
-import imedevo.model.User;
-import imedevo.service.UserService;
 
 @RestController
 @RequestMapping("/users")
