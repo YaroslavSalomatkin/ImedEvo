@@ -1,15 +1,18 @@
 package imedevo.service;
 
 
-import imedevo.httpStatuses.DocStatus;
 import imedevo.model.Clinic;
 import imedevo.model.Doctor;
+import imedevo.model.Specialization;
 import imedevo.repository.ClinicRepository;
 import imedevo.repository.DoctorRepository;
+import imedevo.repository.SpecializationRepository;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.transaction.Transactional;
+import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,73 +26,88 @@ public class SearchService {
   @Autowired
   ClinicRepository clinicRepository;
 
+  @Autowired
+  SpecializationRepository specializationRepository;
+
   @Transactional
   public Map<String, Object> findByAnyParams(String searchParams) {
-    Map<String, Object> result = new HashMap<>();
-    result.put("doctors", findDoctorBySpecializatin(searchParams));
-//    result.put("doctors", findDoctorByLastname(searchParams));
-    result.put("clinics", findClinicByName(searchParams));
-    return result;
+    Map<String, Object> searchResult = new HashMap<>();
+
+    List<Doctor> foundByDoctorSpecialization = findDoctorBySpecializatin(searchParams);
+    List<Doctor> foundByDoctorLastname = findDoctorByLastname(searchParams);
+    List<Clinic> foundByClinicName = findClinicByName(searchParams);
+
+    if (foundByDoctorSpecialization.size() == 0 && foundByDoctorLastname.size() == 0) {
+      searchResult.put("doctors", null);
+    } else if (foundByDoctorSpecialization.size() != 0) {
+      searchResult.put("doctors", foundByDoctorSpecialization);
+    } else {
+      searchResult.put("doctors", foundByDoctorLastname);
+    }
+    if (foundByClinicName.size() == 0){
+      searchResult.put("clinics", null);
+    }else {
+      searchResult.put("clinics", findClinicByName(searchParams));
+    }
+    return searchResult;
   }
 
 
   @Transactional
-  public Map<String, Object> findDoctorBySpecializatin(String searchParams) {
-    Map<String, Object> searchingResult = new HashMap<>();
+  public List<Doctor> findDoctorBySpecializatin(String searchParams) {
+    List<Doctor> searchingResult = new ArrayList<>();
 
     if (searchParams.equals(null)) {
-      searchingResult.put("status", DocStatus.NOT_SPECIFIED_PARAMETERS);
       return searchingResult;
     }
-    List<Doctor> foundBySpecializatin;
+    Specialization foundSpecializatin = null;
     try {
-      foundBySpecializatin = doctorRepository.findByDoctorSpecialization(searchParams);
-    }catch (Exception e){
-      throw null;
+      foundSpecializatin = specializationRepository.findBySpecializationName(searchParams);
+    } catch (SQLGrammarException e) {
+      System.err.println("SQLGrammarException: " + e.getMessage());
+    } catch (NullPointerException e) {
+      System.err.println("NullPointerException: " + e.getMessage());
     }
-//    if (foundBySpecializatin == null) {
-//      searchingResult.put("status", DocStatus.DOCTOR_PROFILE_NOT_EXIST);
-//      return searchingResult;
-//    } else {
-
-//      searchingResult.put("status", DocStatus.REQUEST_PASSED);
-      searchingResult.put("doctors", foundBySpecializatin);
-
+    if (foundSpecializatin == null || foundSpecializatin.getDoctors() == null) {
       return searchingResult;
-//    }
+    }
+      return foundSpecializatin.getDoctors();
   }
 
   @Transactional
-  public Map<String, Object> findDoctorByLastname(String searchParams) {
-    Map<String, Object> searchingResult = new HashMap<>();
+  public List<Doctor> findDoctorByLastname(String searchParams) {
+    List<Doctor> foundByLastname = new ArrayList<>();
 
     if (searchParams.equals(null)) {
-      searchingResult.put("status", DocStatus.NOT_SPECIFIED_PARAMETERS);
-      return searchingResult;
+      return foundByLastname;
     }
 
-    if (doctorRepository.findByDoctorSpecialization(searchParams) == null) {
-      searchingResult.put("status", DocStatus.DOCTOR_PROFILE_NOT_EXIST);
-      return searchingResult;
+    try {
+      foundByLastname = doctorRepository.findByDoctorLastname(searchParams);
+    } catch (SQLGrammarException e) {
+      System.err.println("SQLGrammarException: " + e.getMessage());
+    } catch (NullPointerException e) {
+      System.err.println("NullPointerException: " + e.getMessage());
     }
 
-    List<Doctor> foundByLastname = doctorRepository.findByDoctorSpecialization(searchParams);
-    searchingResult.put("status", DocStatus.REQUEST_PASSED);
-    searchingResult.put("doctors", foundByLastname);
-
-    return searchingResult;
+    return foundByLastname;
   }
 
   @Transactional
-  public Map<String, Object> findClinicByName(String clinicName) {
-    Map<String, Object> searchingResult = new HashMap<>();
+  public List<Clinic> findClinicByName(String clinicName) {
+    List<Clinic> foundClinics = new ArrayList<>();
 
-    List<Clinic> selectedClinics = clinicRepository.findByClinicName(clinicName);
+    if (clinicName.equals(null)) {
+      return foundClinics;
+    }
 
-    searchingResult.put("clinics", selectedClinics);
-
-    return searchingResult;
+    try {
+      foundClinics = clinicRepository.findByClinicName(clinicName);
+    } catch (SQLGrammarException e) {
+      System.err.println("SQLGrammarException: " + e.getMessage());
+    } catch (NullPointerException e) {
+      System.err.println("NullPointerException: " + e.getMessage());
+    }
+    return foundClinics;
   }
-
-
 }

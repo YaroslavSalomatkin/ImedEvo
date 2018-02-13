@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -62,6 +61,10 @@ public class Specialization {
 
   public void setSpecializationName(String specializationName) {
     this.specializationName = specializationName;
+  }
+
+  public String getSpecializationName() {
+    return specializationName;
   }
 
   public String getSpecializationNameEn() {

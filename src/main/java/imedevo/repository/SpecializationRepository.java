@@ -25,5 +25,4 @@ public interface SpecializationRepository extends CrudRepository<Specialization,
       + ")",
       nativeQuery = true)
   List<Specialization> findSimilarSpecialization(String specializationName);
-
 }
