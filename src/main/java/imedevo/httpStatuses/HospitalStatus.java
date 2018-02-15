@@ -13,7 +13,7 @@ public enum HospitalStatus {
     REGISTRATION_ERROR_EMPTY_EMAIL(903, "Empty e-mail"),
     REGISTRATION_ERROR_INCORRECT_EMAIL(904, "You enter incorrect e-mail"),
     REGISTRATION_ERROR_EMPTY_PHONE(905, "Error. Empty phone."),
-    REGISTRATION_ERROR_EMPTY_BIRTHADAY(906, "Error. Empty Birthday."),
+    REGISTRATION_ERROR_EMPTY_DESCRIPTION(906, "Error. Empty Description."),
     REGISTRATION_ERROR_EMPTY_NAME(907, "Error. Empty name."),
     REGISTRATION_ERROR_EMPTY_LOGO(908, "Error. Empty logo."),
     REGISTRATION_ERROR_EMPTY_MEDICAL_LECENSE(808, "Error. Empty medical license."),

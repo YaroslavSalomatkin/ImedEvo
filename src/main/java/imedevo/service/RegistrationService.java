@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +88,7 @@ public class RegistrationService {
       return map;
     }
 
-    user.setDateOfRegistration(LocalDateTime.now());
+    user.setDateOfRegistration(Date.valueOf(LocalDate.now()));
     userRepository.save(user);
     List<UserRole> userRoles = rolesService.getUserRoles(user.getId());
     userRoles.add(new UserRole(user.getId(), Role.USER));
