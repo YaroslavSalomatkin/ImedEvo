@@ -1,17 +1,19 @@
 package imedevo.service;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import imedevo.httpStatuses.DocStatus;
 import imedevo.model.Clinic;
 import imedevo.model.Doctor;
 import imedevo.repository.ClinicRepository;
 import imedevo.repository.DoctorRepository;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class SearchService {

@@ -44,7 +44,7 @@ public class ClinicController {
     return clinicService.updateClinic(clinic);
   }
 
-  @DeleteMapping("deleteclinic/{id}")
+  @DeleteMapping("/deleteclinic/{id}")
   public void deleteClinic(@PathVariable Long id) {
     clinicService.delete(id)
         .orElseThrow(NoSuchClinicException::new);

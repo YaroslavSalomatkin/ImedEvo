@@ -1,8 +1,8 @@
 package imedevo.model;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -58,7 +58,7 @@ public class User {
   private Date birthDate;
 
   @Column(name = "date_of_registration")
-  private LocalDateTime dateOfRegistration;
+  private Date dateOfRegistration;
 
   @OneToMany(fetch = FetchType.LAZY)
   @JoinTable(
@@ -76,7 +76,7 @@ public class User {
 
   public User(String firstName, String lastName, String phone, String email,
       String password, String city, String house, String street, String patronymic, String sex,
-      Date birthDate, Doctor doctor, LocalDateTime dateOfRegistration) {
+      Date birthDate, Doctor doctor, Date dateOfRegistration) {
     this.lastName = lastName;
     this.firstName = firstName;
     this.patronymic = patronymic;
@@ -217,11 +217,11 @@ public class User {
     this.userRoles = userRoles;
   }
 
-  public LocalDateTime getDateOfRegistration() {
+  public Date getDateOfRegistration() {
     return dateOfRegistration;
   }
 
-  public void setDateOfRegistration(LocalDateTime dateOfRegistration) {
+  public void setDateOfRegistration(Date dateOfRegistration) {
     this.dateOfRegistration = dateOfRegistration;
   }
 }
