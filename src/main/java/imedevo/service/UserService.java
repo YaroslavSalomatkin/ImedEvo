@@ -3,22 +3,31 @@ package imedevo.service;
 import imedevo.httpStatuses.AccessDeniedException;
 import imedevo.httpStatuses.UserNotFoundException;
 import imedevo.httpStatuses.UserStatus;
+import imedevo.model.Image;
 import imedevo.model.Role;
 import imedevo.model.User;
 import imedevo.model.UserRole;
+import imedevo.repository.ImageRepository;
 import imedevo.repository.UserRepository;
 import imedevo.repository.UserRoleRepository;
+import java.io.IOException;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.transaction.Transactional;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.web.multipart.MultipartFile;
+
 
 @Service
 public class UserService {
@@ -32,7 +41,11 @@ public class UserService {
   @Autowired
   private RolesService rolesService;
 
+  @Autowired
+  private ImageRepository imageRepository;
+
   private final String status = "status";
+
 
   public List<User> getAll() {
     List<User> listOfUsers = (List<User>) userRepository.findAll();
@@ -81,7 +94,7 @@ public class UserService {
   }
 
   @Transactional
-  public Map<String, Object> updateUser(User updatedUser) {
+  public Map<String, Object> updateUser(User updatedUser) throws UserNotFoundException {
     Map<String, Object> map = new HashMap<>();
 
     /** this is security checking */
@@ -118,7 +131,8 @@ public class UserService {
   }
 
   @Transactional
-  public Map<String, Object> deleteUser(long id) throws UserNotFoundException, AccessDeniedException {
+  public Map<String, Object> deleteUser(long id)
+      throws UserNotFoundException, AccessDeniedException {
     /** this is security checking */
 //    if (userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
 //        .getId() != id) {
@@ -133,6 +147,40 @@ public class UserService {
     } else {
       throw new UserNotFoundException();
     }
+  }
+
+  public Map<String, Object> uploadImage(long userId, MultipartFile imageFile) {
+
+    System.out.println("userId = " + userId);
+    System.out.println("file = " + imageFile.getOriginalFilename());
+
+    String fileName = "";
+    String link = "";
+
+    Logger logger = LogManager.getLogger(getClass());
+    String uploadImageFolder = "testfolder";
+    Map<String, Object> map = new HashMap<>();
+
+    if (!imageFile.isEmpty()) {
+      try {
+        if (!Files.exists(Paths.get(uploadImageFolder))) {
+          Files.createDirectory(Paths.get(uploadImageFolder));
+        }
+
+        fileName = imageFile.getOriginalFilename();
+        Files.copy(imageFile.getInputStream(),
+            Paths.get(uploadImageFolder,
+                String.format("(%s)%s", Instant.now().getEpochSecond(), fileName)));
+        link = uploadImageFolder + "/" + fileName;
+        imageRepository.save(new Image(userId, link));
+        map.put("status", UserStatus.IMAGE_UPLOAD_SUCCESS);
+      } catch (IOException ex) {
+        logger.error(ex.getMessage(), ex);
+      }
+    } else {
+      map.put("status", UserStatus.IMAGE_IS_EMPTY);
+    }
+    return map;
   }
 
   public Map<String, Object> login(String email, String password) {

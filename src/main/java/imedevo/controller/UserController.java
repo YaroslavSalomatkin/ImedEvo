@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/users")
@@ -40,8 +41,15 @@ public class UserController {
     return userService.save(user);
   }
 
+  @PostMapping("/uploaduserimage")
+  public Map<String, Object> uploadUserImage(@RequestParam("user_id") long userId,
+      @RequestParam("file") MultipartFile imageFile) {
+    return userService.uploadImage(userId, imageFile);
+  }
+
   @PutMapping("/updateuser")
-  public Map<String, Object> updateUser(@RequestBody User user) {
+
+  public Map<String, Object> updateUser(@RequestBody User user) throws UserNotFoundException {
     return userService.updateUser(user);
   }
 

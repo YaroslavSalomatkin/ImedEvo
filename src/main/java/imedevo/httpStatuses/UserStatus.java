@@ -35,7 +35,7 @@ public enum UserStatus {
   EDIT_PROFILE_ERROR(731, "Error while editing profile"),
   ADD_USER_OK(732, "Adding user in DataBase OK"),
 
-  // comments and rating
+  // comments and  rating
   ADD_COMMENT_SUCCESS(741, "Comment added"),
   ADD_RATING_SUCCESS(742, "Rating added"),
   EDIT_COMMENT_SUCCESS(743, "Comment edited"),
@@ -59,8 +59,12 @@ public enum UserStatus {
   FAVOURITE_DOCTOR_DELETE_OK(772, "Favourite doctor deleted"),
   FAVOURITE_DOCTOR_NOT_FOUND(773, "Favourite doctor not found"),
 
+  //upload user photo
+  IMAGE_IS_EMPTY(780, "Your image is empty."),
+  IMAGE_UPLOAD_SUCCESS(781, "You uploading success"),
+
   // deleting profile
-  DELETE_PROFILE_SUCCESS(760, "Profile deleted");
+  DELETE_PROFILE_SUCCESS(790, "Profile deleted");
 
   private int code;
 
