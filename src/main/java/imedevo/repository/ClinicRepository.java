@@ -17,6 +17,4 @@ public interface ClinicRepository extends JpaRepository<Clinic, Long> {
       + "WHERE (clinic_name) LIKE (?1)",
       nativeQuery = true)
   List<Clinic> findByClinicName(String clinicName);
-
-
 }

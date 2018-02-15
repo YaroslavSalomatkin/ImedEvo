@@ -33,15 +33,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         .antMatchers("/", "/users/login", "/users/registration", "/doctors/getall", "/doctors/*",
             "/clinics/getall", "/clinics/*", "/forgot/reset", "/forgot/newpassword",
-            "/laboratories/getall", "/laboratories/*", "/diagnostics/getall", "/diagnostics/*")
-        .permitAll()
+            "/laboratories/getall", "/laboratories/*", "/diagnostics/getall", "/diagnostics/*",
+            "/search/byanyparams").permitAll()
         .antMatchers("/users/*", "/users/updateuser")
         .hasAnyAuthority("USER", "SUPER_ADMIN", "DOCTOR", "CLINIC_ADMIN")
         .antMatchers("/doctors/updatedoctor")
         .hasAnyAuthority("DOCTOR", "CLINIC_ADMIN", "SUPER_ADMIN")
         .antMatchers("/users/createdoctor", "/doctors/deletedoctor/*",
-            "/clinics/createclinic", "/clinics/updateclinic", "/clinics/deleteclinic/*",
-            "/laboratories/admin/**", "/diagnostics/admin/**")
+            "/clinics/createclinic", "/clinics/updateclinic", "/clinics/deleteclinic/*")
         .hasAnyAuthority("CLINIC_ADMIN", "SUPER_ADMIN")
         .antMatchers("/users/getall")
         .hasAuthority("SUPER_ADMIN")
