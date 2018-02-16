@@ -3,7 +3,8 @@ package imedevo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,9 +51,9 @@ public class FavouriteDoctorService {
   public Map<String, Object> addFavouriteDoctor(FavouriteDoctor favouriteDoctor) {
     Map<String, Object> map = new HashMap<>();
     if (favouriteDoctor != null) {
-      favouriteDoctor.setDateOfEntry(LocalDateTime.now());
+      favouriteDoctor.setDateOfEntry(Date.valueOf(LocalDate.now()));
       map.put("status", UserStatus.FAVOURITE_DOCTOR_ADD_OK);
-      favouriteDoctorsRepository.save(favouriteDoctor);
+      map.put("favourite-doctor", favouriteDoctorsRepository.save(favouriteDoctor));
     } else {
       map.put("status", UserStatus.FAVOURITE_DOCTOR_ADD_ERROR);
     }

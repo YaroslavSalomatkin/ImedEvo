@@ -1,6 +1,6 @@
 package imedevo.model;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,12 +25,12 @@ public class FavouriteDoctor {
   private long doctorId;
 
   @Column(name = "date_of_entry")
-  private LocalDateTime dateOfEntry;
+  private Date dateOfEntry;
 
   public FavouriteDoctor() {
   }
 
-  public FavouriteDoctor(long id, long userId, long doctorId, LocalDateTime dateOfEntry) {
+  public FavouriteDoctor(long id, long userId, long doctorId, Date dateOfEntry) {
     this.id = id;
     this.userId = userId;
     this.doctorId = doctorId;
@@ -63,11 +61,11 @@ public class FavouriteDoctor {
     this.doctorId = doctorId;
   }
 
-  public LocalDateTime getDateOfEntry() {
+  public Date getDateOfEntry() {
     return dateOfEntry;
   }
 
-  public void setDateOfEntry(LocalDateTime dateOfEntry) {
+  public void setDateOfEntry(Date dateOfEntry) {
     this.dateOfEntry = dateOfEntry;
   }
 

@@ -30,20 +30,20 @@ public class AppointmentController {
     return appointmentService.getByUserId(id);
   }
 
-  @GetMapping("bydoctors/{id}")
+  @GetMapping("/bydoctors/{id}")
   public List<Appointment> getByDoctorId(@PathVariable long id) {
     return appointmentService.getByDoctorId(id);
   }
 
   @PostMapping("/addappointment")
   public Map<String, Object> addAppointment(@RequestBody Appointment appointment) {
-    return appointmentService.addAppoinsment(appointment);
+    return appointmentService.addAppointment(appointment);
   }
 
   @PutMapping("/updateappointment")
   public Map<String, Object> updateAppointment(@RequestBody Appointment appointment)
       throws AccessDeniedException {
-    return appointmentService.updateAppoinsment(appointment);
+    return appointmentService.updateAppointment(appointment);
   }
 
   @DeleteMapping("/deleteappointment")
