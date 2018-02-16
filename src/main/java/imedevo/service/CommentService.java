@@ -1,13 +1,13 @@
 package imedevo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +47,7 @@ public class CommentService {
       map.put("status", UserStatus.COMMENT_INVALID);
       return map;
     }
-    comment.setDateTime(LocalDateTime.now());
+    comment.setDateTime(LocalDate.now() + " " + LocalTime.now());
     map.put("status", UserStatus.ADD_COMMENT_SUCCESS);
     map.put("comment", commentsRepository.save(comment));
     return map;

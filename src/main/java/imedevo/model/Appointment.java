@@ -1,7 +1,5 @@
 package imedevo.model;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,8 +21,11 @@ public class Appointment {
   @Column(name = "doctor_id")
   private long doctorId;
 
-  @Column(name = "start_time")
-  private LocalDateTime startTime;
+  @Column(name = "time")
+  private String time;
+
+  @Column(name = "date")
+  private String date;
 
   @Column(name = "is_approved")
   private boolean isApproved;
@@ -32,12 +33,13 @@ public class Appointment {
   @Column(name = "status")
   private String status;
 
-  public Appointment(long id, long userId, long doctorId, LocalDateTime startTime,
+  public Appointment(long id, long userId, long doctorId, String time, String date,
       boolean isAproved, String status) {
     this.id = id;
     this.userId = userId;
     this.doctorId = doctorId;
-    this.startTime = startTime;
+    this.time = time;
+    this.date = date;
     this.isApproved = isAproved;
     this.status = status;
   }
@@ -69,12 +71,20 @@ public class Appointment {
     this.doctorId = doctorId;
   }
 
-  public LocalDateTime getStartTime() {
-    return startTime;
+  public String getTime() {
+    return time;
   }
 
-  public void setStartTime(LocalDateTime startTime) {
-    this.startTime = startTime;
+  public void setTime(String time) {
+    this.time = time;
+  }
+
+  public String getDate() {
+    return date;
+  }
+
+  public void setDate(String date) {
+    this.date = date;
   }
 
   public boolean isApproved() {
@@ -99,8 +109,10 @@ public class Appointment {
         "id=" + id +
         ", userId=" + userId +
         ", doctorId=" + doctorId +
-        ", startTime=" + startTime +
+        ", time=" + time +
+        ", date=" + date +
         ", isApproved=" + isApproved +
+        ", status='" + status + '\'' +
         '}';
   }
 }

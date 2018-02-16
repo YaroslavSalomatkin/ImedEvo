@@ -1,7 +1,5 @@
 package imedevo.model;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,13 +28,13 @@ public class Comment {
   private String text;
 
   @Column(name = "date_time")
-  private LocalDateTime dateTime;
+  private String dateTime;
 
   public Comment() {
   }
 
   public Comment(long id, long userId, long doctorId, long clinicId, String text,
-      LocalDateTime dateTime) {
+      String dateTime) {
     this.id = id;
     this.userId = userId;
     this.doctorId = doctorId;
@@ -85,11 +83,11 @@ public class Comment {
     this.text = text;
   }
 
-  public LocalDateTime getDateTime() {
+  public String getDateTime() {
     return dateTime;
   }
 
-  public void setDateTime(LocalDateTime dateTime) {
+  public void setDateTime(String dateTime) {
     this.dateTime = dateTime;
   }
 

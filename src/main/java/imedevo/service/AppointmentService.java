@@ -35,7 +35,7 @@ public class AppointmentService {
     return appointmentRepository.findByDoctorId(id);
   }
 
-  public Map<String, Object> addAppoinsment(Appointment appointment) {
+  public Map<String, Object> addAppointment(Appointment appointment) {
 
     if (appointment == null) {
       map.put("status", UserStatus.APPOINTMENT_INVALID);
@@ -47,7 +47,7 @@ public class AppointmentService {
     return map;
   }
 
-  public Map<String, Object> updateAppoinsment(Appointment updatedAppointment)
+  public Map<String, Object> updateAppointment(Appointment updatedAppointment)
       throws AccessDeniedException {
     /** this is security checking */
 //    if (userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())

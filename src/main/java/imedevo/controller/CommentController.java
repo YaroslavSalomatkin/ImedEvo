@@ -30,12 +30,12 @@ public class CommentController {
     return commentService.getByUserId(id);
   }
 
-  @GetMapping("bydoctors/{id}")
+  @GetMapping("/bydoctors/{id}")
   public List<Comment> getByDoctorId(@PathVariable long id) {
     return commentService.getByDoctorId(id);
   }
 
-  @GetMapping("byclinics/{id}")
+  @GetMapping("/byclinics/{id}")
   public List<Comment> getByClinicId(@PathVariable long id) {
     return commentService.getByClinicId(id);
   }
