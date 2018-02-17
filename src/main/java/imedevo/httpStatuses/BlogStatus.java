@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum BlogStatus {
-    NOT_FOUND(808, "Blog not found"),
-    EDIT_BLOG_SUCCESS(809, " Edit success"),
-    REGISTRATION_ERROR_EMPTY_PICTURE(810, " Empty picture"),
-    REGISTRATION_ERROR_EMPTY_FIRSTNAME(811, "Empty field first name"),
-    REGISTRATION_ERROR_EMPTY_LASTNAME(812, "Empty field last name"),
-    REGISTRATION_ERROR_EMPTY_ARTICLENAME(813, "Empty article name"),
-    EDIT_BLOG_ERROR(814," EDIT BLOG ERROR")
+    NOT_FOUND(608, "Blog not found"),
+    EDIT_BLOG_SUCCESS(609, " Edit success"),
+    REGISTRATION_ERROR_EMPTY_PICTURE(610, " Empty picture"),
+    REGISTRATION_ERROR_EMPTY_FIRSTNAME(611, "Empty field first name"),
+    REGISTRATION_ERROR_EMPTY_LASTNAME(612, "Empty field last name"),
+    REGISTRATION_ERROR_EMPTY_ARTICLENAME(613, "Empty article name"),
+    EDIT_BLOG_ERROR(614," EDIT BLOG ERROR")
 ;
 
     private int code;

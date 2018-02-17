@@ -6,6 +6,9 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +47,7 @@ public class DiagnosticService {
       return map;
     }
 
-    if (diagnostic.getName() == null) {
+    if (diagnostic.getName() == null | diagnostic.getName().length() < 3) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
       return map;
     }
@@ -54,32 +57,28 @@ public class DiagnosticService {
       return map;
     }
 
-    if (diagnostic.getAddress() == null) {
+    if (diagnostic.getAddress() == null | diagnostic.getAddress().length() < 8) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
       return map;
     }
 
-    if (diagnostic.getDescription() == null) {
+    if (diagnostic.getDescription() == null | diagnostic.getDescription().length() < 5) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_DESCRIPTION);
       return map;
     }
-
+    diagnostic.setRegistrationDate(LocalDate.now().toString());
     map.put("status", HospitalStatus.REGISTRATION_OK);
-    map.put("clinic", diagnosticRepository.save(diagnostic));
+    map.put("diagnostic", diagnosticRepository.save(diagnostic));
     return map;
   }
 
   @Transactional
   public Map<String, Object> updateDiagnostic(Diagnostic updatedDiagnostic) {
     Map<String, Object> map = new HashMap<>();
-    if (updatedDiagnostic.getEmail() != null) {
-      Diagnostic checkDiagnosticFromDb = diagnosticRepository
-          .findByEmail(updatedDiagnostic.getEmail());
-      if (checkDiagnosticFromDb != null && updatedDiagnostic.getId() != checkDiagnosticFromDb
-          .getId()) {
-        map.put("status", HospitalStatus.EDIT_PROFILE_ERROR);
-        return map;
-      }
+
+    if (updatedDiagnostic.getId() == null) {
+      map.put("status", HospitalStatus.EDIT_PROFILE_ERROR);
+      return map;
     }
 
     Diagnostic diagnosticFromDb = diagnosticRepository.findOne(updatedDiagnostic.getId());

@@ -32,13 +32,13 @@ public class Discount {
   @Column(name = "discount")
   private String discount;
   @Column(name = "date_of_entry")
-  private Date dateOfEntry;
+  private String dateOfEntry;
 
   public Discount() {
   }
 
   public Discount(Long id, String name, String description, Long clinicId, Long doctorId,
-      Date endDate, BigDecimal price, String discount, Date dateOfEntry) {
+      Date endDate, BigDecimal price, String discount, String dateOfEntry) {
     this.id = id;
     this.name = name;
     this.description = description;
@@ -114,11 +114,11 @@ public class Discount {
     this.discount = discount;
   }
 
-  public Date getDateOfEntry() {
+  public String getDateOfEntry() {
     return dateOfEntry;
   }
 
-  public void setDateOfEntry(Date dateOfEntry) {
+  public void setDateOfEntry(String dateOfEntry) {
     this.dateOfEntry = dateOfEntry;
   }
 }

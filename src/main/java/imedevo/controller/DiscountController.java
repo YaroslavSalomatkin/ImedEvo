@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
+import imedevo.httpStatuses.DiscountNotFoundException;
 import imedevo.model.Discount;
 import imedevo.service.DiscountService;
 
@@ -30,8 +31,18 @@ public class DiscountController {
   }
 
   @GetMapping("/{id}")
-  public Discount getById(@PathVariable Long id) {
+  public Discount getById(@PathVariable Long id) throws DiscountNotFoundException {
     return discountService.getById(id);
+  }
+
+  @GetMapping("/byclinics")
+  public List<Discount> getByClinics(@RequestParam ("clinicid") Long clinicId) {
+    return discountService.getByClinics(clinicId);
+  }
+
+  @GetMapping("/bydoctors")
+  public List<Discount> getByDoctors(@RequestParam ("doctorid") Long doctorId) {
+    return discountService.getByDoctors(doctorId);
   }
 
   @PostMapping("/creatediscount")
@@ -40,12 +51,13 @@ public class DiscountController {
   }
 
   @PutMapping("/updatediscount")
-  public Map<String, Object> updateDiscount(@RequestBody Discount discount) {
+  public Map<String, Object> updateDiscount(@RequestBody Discount discount)
+      throws DiscountNotFoundException {
     return discountService.updateDiscount(discount);
   }
 
   @DeleteMapping("/deletediscount")
-  public void deleteDiscount(@RequestParam("id") Long id) {
+  public void deleteDiscount(@RequestParam("id") Long id) throws DiscountNotFoundException {
     discountService.deleteDiscount(id);
   }
 }

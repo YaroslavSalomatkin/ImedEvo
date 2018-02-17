@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -44,8 +45,8 @@ public class DiagnosticController {
     return diagnosticService.updateDiagnostic(diagnostic);
   }
 
-  @DeleteMapping("/admin/deletediagnostic/{id}")
-  public void deleteDiagnostic(@PathVariable Long id) {
+  @DeleteMapping("/admin/deletediagnostic")
+  public void deleteDiagnostic(@RequestParam("id") Long id) {
     diagnosticService.deleteDiagnostic(id).orElseThrow(NoSuchClinicException::new);
   }
 

@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +84,7 @@ public class UserService {
       map.put(status, UserStatus.REGISTRATION_ERROR_INCORRECT_PASSWORD);
       return map;
     }
-    user.setDateOfRegistration(Date.valueOf(LocalDate.now()));
+    user.setDateOfRegistration(LocalDate.now().toString());
     map.put(status, UserStatus.ADD_USER_OK);
     map.put("user", userRepository.save(user));
 
