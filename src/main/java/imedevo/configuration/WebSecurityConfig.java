@@ -2,7 +2,6 @@ package imedevo.configuration;
 
 
 import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,14 +18,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private DataSource dataSource;
+  @Autowired
+  private DataSource dataSource;
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-                .antMatchers("/assets/**", "/index.html", "/bootstrap/**", "/css/**");
-    }
+  @Override
+  public void configure(WebSecurity web) throws Exception {
+    web.ignoring()
+        .antMatchers("/assets/**", "/index.html", "/bootstrap/**", "/css/**");
+  }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -62,21 +61,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
 //        .csrf()
 //        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-    }
+  }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery(
-                        "select u.email as username, u.password, true as enabled from users u "
-                                + "where u.email=?")
-                .authoritiesByUsernameQuery(
-                        "select u.email as username, r.role from users u "
-                                + "join user_roles ur "
-                                + "join roles r "
-                                + "on r.id=ur.role_id and u.id=ur.user_id "
-                                + "where u.email=?");
-    }
+  @Autowired
+  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    auth
+        .jdbcAuthentication()
+        .dataSource(dataSource)
+        .usersByUsernameQuery(
+            "select u.email as username, u.password, true as enabled from users u "
+            + "where u.email=?")
+        .authoritiesByUsernameQuery(
+            "select u.email as username, r.role from users u "
+            + "join user_roles ur "
+            + "join roles r "
+            + "on r.id=ur.role_id and u.id=ur.user_id "
+            + "where u.email=?");
+  }
 }
