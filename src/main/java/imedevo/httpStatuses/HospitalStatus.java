@@ -7,7 +7,7 @@ public enum HospitalStatus {
     NOT_FOUND(404, "Clinic not found"),
 
     // registration status
-    REGISTRATION_OK(900, "Registration success. Check your e-mail."),
+    REGISTRATION_OK(900, "Registration success"),
     REGISTRATION_ERROR_INCORRECT_PASSWORD(901, "You entered an incorrect password"),
     REGISTRATION_ERROR_DUPLICATE_USERS(902, "User with such e-mail already exist"),
     REGISTRATION_ERROR_EMPTY_EMAIL(903, "Empty e-mail"),
@@ -16,8 +16,8 @@ public enum HospitalStatus {
     REGISTRATION_ERROR_EMPTY_DESCRIPTION(906, "Error. Empty Description."),
     REGISTRATION_ERROR_EMPTY_NAME(907, "Error. Empty name."),
     REGISTRATION_ERROR_EMPTY_LOGO(908, "Error. Empty logo."),
-    REGISTRATION_ERROR_EMPTY_MEDICAL_LECENSE(808, "Error. Empty medical license."),
-    REGISTRATION_ERROR_EMPTY_ADDRESS(809, "Error. Empty address."),
+    REGISTRATION_ERROR_EMPTY_MEDICAL_LECENSE(909, "Error. Empty medical license."),
+    REGISTRATION_ERROR_EMPTY_ADDRESS(910, "Error. Empty address."),
 
     // login status
     LOGIN_OK(910, "Login success."),
