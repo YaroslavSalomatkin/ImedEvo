@@ -23,52 +23,52 @@ import java.util.Optional;
 @Service
 public class ClinicService {
 
-    @Autowired
-    private ClinicRepository clinicRepository;
+  @Autowired
+  private ClinicRepository clinicRepository;
 
-    public List<Clinic> getAll() {
-        return clinicRepository.findAll();
-    }
+  public List<Clinic> getAll() {
+    return clinicRepository.findAll();
+  }
 
-    public Clinic getById(long id) throws NoSuchClinicException {
-        Clinic clinic = clinicRepository.findOne(id);
-        if (clinic == null) {
-            throw new NoSuchClinicException();
-        }
-        return clinic;
-    }
+  public Clinic getById(long id) throws NoSuchClinicException {
+      Clinic clinic = clinicRepository.findOne(id);
+      if (clinic == null) {
+          throw new NoSuchClinicException();
+      }
+      return clinic;
+  }
 
-    @Transactional
-    public Map<String, Object> save(Clinic clinic) {
-        Map<String, Object> map = new HashMap<>();
+  @Transactional
+  public Map<String, Object> save(Clinic clinic) {
+    Map<String, Object> map = new HashMap<>();
 
-        if (clinic.getLogo() == null) {
-            map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_LOGO);
-            return map;
-        }
-        if (clinic.getEmail() == null) {
-            map.put("status", HospitalStatus.REGISTRATION_ERROR_INCORRECT_EMAIL);
-            return map;
-        }
-
-        if (clinic.getClinicName() == null) {
-            map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
-            return map;
-        }
-
-        if (clinic.getMedicalLicense() == null) {
-            map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_MEDICAL_LECENSE);
-            return map;
-        }
-
-        if (clinic.getAddress() == null) {
-            map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
-            return map;
-        }
-        map.put("status", HospitalStatus.REGISTRATION_OK);
-        map.put("clinic", clinicRepository.save(clinic));
+    if (clinic.getLogo() == null) {
+        map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_LOGO);
         return map;
     }
+    if (clinic.getEmail() == null) {
+        map.put("status", HospitalStatus.REGISTRATION_ERROR_INCORRECT_EMAIL);
+        return map;
+    }
+
+    if (clinic.getClinicName() == null) {
+        map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
+        return map;
+    }
+
+    if (clinic.getMedicalLicense() == null) {
+        map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_MEDICAL_LECENSE);
+        return map;
+    }
+
+    if (clinic.getAddress() == null) {
+        map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
+        return map;
+    }
+    map.put("status", HospitalStatus.REGISTRATION_OK);
+    map.put("clinic", clinicRepository.save(clinic));
+    return map;
+  }
 
     @Transactional
     public Map<String, Object> updateClinic(Clinic updatedClinic) {
@@ -103,13 +103,10 @@ public class ClinicService {
         return map;
     }
 
-        public Optional<Clinic> delete (Long id){
-            Optional<Clinic> mayBeClinic = clinicRepository.findById(id);
-            mayBeClinic.ifPresent(clinic -> clinicRepository.delete(clinic.getId()));
-            return mayBeClinic;
-        }
-
-
-
+  public Optional<Clinic> delete (Long id){
+      Optional<Clinic> mayBeClinic = clinicRepository.findById(id);
+      mayBeClinic.ifPresent(clinic -> clinicRepository.delete(clinic.getId()));
+      return mayBeClinic;
+  }
 }
 
