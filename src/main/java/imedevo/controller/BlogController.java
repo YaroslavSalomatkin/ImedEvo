@@ -40,8 +40,7 @@ public class BlogController {
 
     @DeleteMapping("/deleteblog/{id}")
     public void deleteClinic(@PathVariable Long id) throws BlogNotFoundException {
-        blogService.delete(id)
-                .orElseThrow(BlogNotFoundException::new);
+        blogService.deleteBlog(id);
     }
 
 }

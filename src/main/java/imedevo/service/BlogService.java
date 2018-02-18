@@ -80,11 +80,11 @@ public class BlogService {
                 success = true;
             }
         }
-        if(success) {
+        if (success) {
             map.put("status", "Success");
             map.put("blog", blogRepository.save(blog));
             return map;
-        }else{
+        } else {
             map.put("status", "Create blog error");
             return map;
         }
@@ -98,40 +98,58 @@ public class BlogService {
         Blog blogFromDb = blogRepository.findOne(updateBlog.getId());
         if (blogFromDb == null) {
             map.put("status", BlogStatus.NOT_FOUND);
+        } else {
+
+            Field[] fields = updateBlog.getClass().getDeclaredFields();
+            AccessibleObject.setAccessible(fields, true);
+            for (Field field : fields) {
+                if (field.getName().equals("id")) {
+                    continue;
+                }
+            }
+            List<UserRole> userRoles = rolesService.getUserRoles(userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                    .getId());
+            boolean success = false;
+            for (UserRole userRole : userRoles) {
+                if (userRole.getRole().equals(Role.BLOGGER) || (userRole.getRole().equals(Role.SUPER_ADMIN))) {
+                    success = true;
+                }
+            }
+            if (success) {
+                map.put("status", BlogStatus.EDIT_BLOG_SUCCESS);
+                map.put("blog", blogRepository.save(updateBlog));
+                return map;
+            } else {
+                map.put("status", BlogStatus.EDIT_BLOG_ERROR);
+                return map;
+            }
         }
-        Field[] fields = updateBlog.getClass().getDeclaredFields();
-        AccessibleObject.setAccessible(fields, true);
-        for (Field field : fields) {
-            if (field.getName().equals("id")) {
-                continue;
-            }
-            }
-        //            if (userRole.getRoleId() != 6 || userRole.getRoleId() != 4) {
+        return map;
+    }
+
+    @Transactional
+    public Map<String, Object> deleteBlog(long id)
+            throws BlogNotFoundException {
+        Map<String, Object> map = new HashMap<>();
+
         List<UserRole> userRoles = rolesService.getUserRoles(userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                 .getId());
         boolean success = false;
-        for (UserRole userRole : userRoles) {
-            if (userRole.getRole().equals(Role.BLOGGER) || (userRole.getRole().equals(Role.SUPER_ADMIN))) {
-                success = true;
+        if (blogRepository.findOne(id) != null) {
+            for (UserRole userRole : userRoles) {
+                if (userRole.getRole().equals(Role.BLOGGER) || (userRole.getRole().equals(Role.SUPER_ADMIN))) {
+                    success = true;
+                }
             }
+            if (success) {
+                blogRepository.delete(id);
+            }
+        } else {
+            throw new BlogNotFoundException();
         }
-        if(success) {
-            map.put("status", BlogStatus.EDIT_BLOG_SUCCESS);
-            map.put("blog", blogRepository.save(updateBlog));
-            return map;
-        }else{
-            map.put("status", BlogStatus.EDIT_BLOG_ERROR);
-            return map;
-        }
+     return map;
     }
-
-    public Optional<Blog> delete (Long id){
-        Optional<Blog> mayBeBlog = blogRepository.findById(id);
-        mayBeBlog.ifPresent(clinic -> blogRepository.delete(clinic.getId()));
-        return mayBeBlog;
-    }
-
-    }
+}
 
 
 
