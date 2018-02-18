@@ -40,6 +40,11 @@ public class CommentController {
     return commentService.getByClinicId(id);
   }
 
+  @GetMapping("{id}")
+  public Comment getByCommentId(@PathVariable long id) {
+    return commentService.getById(id);
+  }
+
   @PostMapping("/addcomment")
   public Map<String, Object> addComment(@RequestBody Comment comment) {
     return commentService.addComment(comment);

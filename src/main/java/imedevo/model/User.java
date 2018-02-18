@@ -58,7 +58,7 @@ public class User {
   private Date birthDate;
 
   @Column(name = "date_of_registration")
-  private Date dateOfRegistration;
+  private String dateOfRegistration;
 
   @OneToMany(fetch = FetchType.LAZY)
   @JoinTable(
@@ -76,7 +76,7 @@ public class User {
 
   public User(String firstName, String lastName, String phone, String email,
       String password, String city, String house, String street, String patronymic, String sex,
-      Date birthDate, Doctor doctor, Date dateOfRegistration) {
+      Date birthDate, Doctor doctor, String dateOfRegistration) {
     this.lastName = lastName;
     this.firstName = firstName;
     this.patronymic = patronymic;
@@ -217,11 +217,11 @@ public class User {
     this.userRoles = userRoles;
   }
 
-  public Date getDateOfRegistration() {
+  public String getDateOfRegistration() {
     return dateOfRegistration;
   }
 
-  public void setDateOfRegistration(Date dateOfRegistration) {
+  public void setDateOfRegistration(String dateOfRegistration) {
     this.dateOfRegistration = dateOfRegistration;
   }
 }
