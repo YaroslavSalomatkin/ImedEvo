@@ -33,8 +33,7 @@ public class BlogController {
 
 
     @PutMapping("/updateblog")
-    public Map<String, Object> updateBlog(@RequestBody Blog blog) {
-        return blogService.updateBlog(blog);
+    public Map<String, Object> updateBlog(@RequestBody Blog blog) { return blogService.updateBlog(blog);
     }
 
 

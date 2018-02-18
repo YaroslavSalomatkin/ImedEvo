@@ -12,6 +12,7 @@ import imedevo.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
 
 import javax.transaction.Transactional;
@@ -99,14 +100,15 @@ public class BlogService {
         if (blogFromDb == null) {
             map.put("status", BlogStatus.NOT_FOUND);
         } else {
-
             Field[] fields = updateBlog.getClass().getDeclaredFields();
             AccessibleObject.setAccessible(fields, true);
             for (Field field : fields) {
-                if (field.getName().equals("id")) {
-                    continue;
+                Object blogFromDbValue = ReflectionUtils.getField(field, updateBlog);
+                if (blogFromDbValue != null) {
+                    ReflectionUtils.setField(field, blogFromDb, blogFromDbValue);
                 }
             }
+
             List<UserRole> userRoles = rolesService.getUserRoles(userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                     .getId());
             boolean success = false;
@@ -117,12 +119,13 @@ public class BlogService {
             }
             if (success) {
                 map.put("status", BlogStatus.EDIT_BLOG_SUCCESS);
-                map.put("blog", blogRepository.save(updateBlog));
+                map.put("blog", blogRepository.save(blogFromDb));
                 return map;
             } else {
                 map.put("status", BlogStatus.EDIT_BLOG_ERROR);
                 return map;
             }
+
         }
         return map;
     }
