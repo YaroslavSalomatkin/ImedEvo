@@ -6,8 +6,10 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,13 +43,18 @@ public class CommentService {
     return commentsRepository.findByClinicId(id);
   }
 
+  public Comment getById(long id) {
+    return commentsRepository.findOne(id);
+  }
+
   public Map<String, Object> addComment(Comment comment) {
 
     if (comment == null) {
       map.put("status", UserStatus.COMMENT_INVALID);
       return map;
     }
-    comment.setDateTime(LocalDate.now() + " " + LocalTime.now());
+    comment.setDate(LocalDate.now().toString());
+    comment.setTime(Time.valueOf(LocalTime.now(ZoneId.of("UTC+2"))));
     map.put("status", UserStatus.ADD_COMMENT_SUCCESS);
     map.put("comment", commentsRepository.save(comment));
     return map;

@@ -43,7 +43,7 @@ public class Diagnostic {
   @Column(name = "logo")
   private String logo;
   @Column(name = "registration_date")
-  private Date registrationDate;
+  private String registrationDate;
 
   public Diagnostic() {
 
@@ -199,11 +199,11 @@ public class Diagnostic {
     this.logo = logo;
   }
 
-  public Date getRegistrationDate() {
+  public String getRegistrationDate() {
     return registrationDate;
   }
 
-  public void setRegistrationDate(Date registrationDate) {
+  public void setRegistrationDate(String registrationDate) {
     this.registrationDate = registrationDate;
   }
 }

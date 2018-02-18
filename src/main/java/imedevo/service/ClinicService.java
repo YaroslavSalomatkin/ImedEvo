@@ -1,24 +1,21 @@
 package imedevo.service;
 
-
-import imedevo.httpStatuses.DocStatus;
-import imedevo.httpStatuses.HospitalStatus;
-import imedevo.httpStatuses.NoSuchClinicException;
-import imedevo.httpStatuses.UserStatus;
-import imedevo.model.Clinic;
-import imedevo.model.User;
-import imedevo.repository.ClinicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
-import javax.transaction.Transactional;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import imedevo.httpStatuses.HospitalStatus;
+import imedevo.httpStatuses.NoSuchClinicException;
+import imedevo.model.Clinic;
+import imedevo.repository.ClinicRepository;
+import javax.transaction.Transactional;
 
 @Service
 public class ClinicService {

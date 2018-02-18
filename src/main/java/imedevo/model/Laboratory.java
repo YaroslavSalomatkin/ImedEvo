@@ -43,7 +43,7 @@ public class Laboratory {
   @Column(name = "logo")
   private String logo;
   @Column(name = "registration_date")
-  private Date registrationDate;
+  private String registrationDate;
 
   public Laboratory() {
 
@@ -200,11 +200,11 @@ public class Laboratory {
     this.logo = logo;
   }
 
-  public Date getRegistrationDate() {
+  public String getRegistrationDate() {
     return registrationDate;
   }
 
-  public void setRegistrationDate(Date registrationDate) {
+  public void setRegistrationDate(String  registrationDate) {
     this.registrationDate = registrationDate;
   }
 }

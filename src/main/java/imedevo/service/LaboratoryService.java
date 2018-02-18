@@ -6,6 +6,7 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class LaboratoryService {
       return map;
     }
 
-    if (laboratory.getName() == null) {
+    if (laboratory.getName() == null | laboratory.getName().length() < 3) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
       return map;
     }
@@ -54,33 +55,30 @@ public class LaboratoryService {
       return map;
     }
 
-    if (laboratory.getAddress() == null) {
+    if (laboratory.getAddress() == null | laboratory.getAddress().length() < 8) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
       return map;
     }
 
-    if (laboratory.getDescription() == null) {
+    if (laboratory.getDescription() == null | laboratory.getDescription().length() < 5) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_DESCRIPTION);
       return map;
     }
-
+    laboratory.setRegistrationDate(LocalDate.now().toString());
     map.put("status", HospitalStatus.REGISTRATION_OK);
-    map.put("clinic", laboratoryRepository.save(laboratory));
+    map.put("laboratory", laboratoryRepository.save(laboratory));
     return map;
   }
 
   @Transactional
   public Map<String, Object> updateLaboratory(Laboratory updatedLaboratory) {
     Map<String, Object> map = new HashMap<>();
-    if (updatedLaboratory.getEmail() != null) {
-      Laboratory checkLaboratoryFromDb = laboratoryRepository
-          .findByEmail(updatedLaboratory.getEmail());
-      if (checkLaboratoryFromDb != null && updatedLaboratory.getId() != checkLaboratoryFromDb
-          .getId()) {
-        map.put("status", HospitalStatus.EDIT_PROFILE_ERROR);
-        return map;
-      }
+
+    if (updatedLaboratory.getId() == null) {
+      map.put("status", HospitalStatus.EDIT_PROFILE_ERROR);
+      return map;
     }
+
     Laboratory laboratoryFromDb = laboratoryRepository.findOne(updatedLaboratory.getId());
     if (laboratoryFromDb == null) {
       map.put("status", HospitalStatus.NOT_FOUND);
@@ -94,7 +92,7 @@ public class LaboratoryService {
         }
       }
       map.put("status", HospitalStatus.EDIT_PROFILE_SUCCESS);
-      map.put("clinic", laboratoryRepository.save(laboratoryFromDb));
+      map.put("laboratory", laboratoryRepository.save(laboratoryFromDb));
     }
     return map;
   }
