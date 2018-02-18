@@ -33,15 +33,13 @@ public class BlogController {
 
 
     @PutMapping("/updateblog")
-    public Map<String, Object> updateBlog(@RequestBody Blog blog) {
-        return blogService.updateBlog(blog);
+    public Map<String, Object> updateBlog(@RequestBody Blog blog) { return blogService.updateBlog(blog);
     }
 
 
     @DeleteMapping("/deleteblog/{id}")
     public void deleteClinic(@PathVariable Long id) throws BlogNotFoundException {
-        blogService.delete(id)
-                .orElseThrow(BlogNotFoundException::new);
+        blogService.deleteBlog(id);
     }
 
 }
