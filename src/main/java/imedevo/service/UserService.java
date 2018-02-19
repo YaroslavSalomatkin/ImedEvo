@@ -3,6 +3,7 @@ package imedevo.service;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,10 +13,8 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +22,7 @@ import java.util.Map;
 import imedevo.httpStatuses.AccessDeniedException;
 import imedevo.httpStatuses.UserNotFoundException;
 import imedevo.httpStatuses.UserStatus;
+import imedevo.model.ChangePassword;
 import imedevo.model.Image;
 import imedevo.model.Role;
 import imedevo.model.User;
@@ -53,6 +53,7 @@ public class UserService {
     List<User> listOfUsers = (List<User>) userRepository.findAll();
     for (User user : listOfUsers) {
       user.setUserRoles(rolesService.getUserRoles(user.getId()));
+      user.setPassword("not displayed");
     }
     return listOfUsers;
   }
@@ -63,6 +64,7 @@ public class UserService {
       throw new UserNotFoundException();
     }
     user.setUserRoles(rolesService.getUserRoles(id));
+    user.setPassword("not displayed");
     return user;
   }
 
@@ -121,6 +123,10 @@ public class UserService {
       Field[] fields = updatedUser.getClass().getDeclaredFields();
       AccessibleObject.setAccessible(fields, true);
       for (Field field : fields) {
+        if (field.getName().equals("id") || field.getName().equals("password") ||
+            field.getName().equals("dateOfRegistration") || field.getName().equals("userRoles")) {
+          continue;
+        }
         Object userFromDbValue = ReflectionUtils.getField(field, updatedUser);
         if (userFromDbValue != null) {
           ReflectionUtils.setField(field, userFromDb, userFromDbValue);
@@ -196,4 +202,25 @@ public class UserService {
     }
     return map;
   }
+
+  public Map<String, Object> changePassword(ChangePassword changePassword)
+      throws AccessDeniedException {
+    Map<String, Object> map = new HashMap<>();
+    if (changePassword.getEmail() == null || changePassword.getPassword() == null) {
+      map.put("status", UserStatus.PASSWORD_CHANGE_REJECTED);
+      return map;
+    }
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    System.out.println(email);
+    User user = userRepository.findByEmail(changePassword.getEmail());
+    if (user.getEmail().equals(email)) {
+      user.setPassword(changePassword.getPassword());
+      map.put("status", UserStatus.PASSWORD_CHANGE_OK);
+      map.put("user", userRepository.save(user));
+    } else {
+      throw new AccessDeniedException();
+    }
+    return map;
+  }
+
 }

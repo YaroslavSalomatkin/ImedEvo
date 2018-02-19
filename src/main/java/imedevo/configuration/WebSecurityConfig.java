@@ -1,6 +1,5 @@
 package imedevo.configuration;
 
-
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(WebSecurity web) throws Exception {
     web.ignoring()
-        .antMatchers("/assets/**", "/index.html", "/**", "/bootstrap/**", "/css/**");
+        .antMatchers("/assets/**", "/index.html", "*/**", "/bootstrap/**", "/css/**");
   }
 
     @Override
@@ -35,20 +34,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/login", "/users/registration", "/doctors/getall", "/doctors/*",
                         "/clinics/getall", "/clinics/*", "/forgot/reset", "/forgot/newpassword",
                         "/laboratories/getall", "/laboratories/*", "/diagnostics/getall", "/diagnostics/*",
-                        "/search/byanyparams").permitAll()
-                .antMatchers("/users/*", "/users/updateuser")
+                        "/search/byanyparams", "/discount/*", "/discount/getall", "/discount/byclinics",
+                        "/discount/bydoctors", "/blog/getall", "/blog/*")
+                .permitAll()
+                .antMatchers("/users/*", "/users/updateuser", "/users/changepassword")
                 .hasAnyAuthority("USER", "SUPER_ADMIN", "DOCTOR", "CLINIC_ADMIN")
-                .antMatchers("/doctors/updatedoctor")
+                .antMatchers("/doctors/updatedoctor", "/discount/admin/**")
                 .hasAnyAuthority("DOCTOR", "CLINIC_ADMIN", "SUPER_ADMIN")
                 .antMatchers("/blog/updateblog")
                 .hasAnyAuthority("SUPER_ADMIN", "BLOGGER")
-                .antMatchers("/users/createdoctor", "/doctors/deletedoctor/*",
-                        "/clinics/createclinic", "/clinics/updateclinic", "/clinics/deleteclinic/*")
+                .antMatchers("/doctors/createdoctor", "/doctors/deletedoctor/*",
+                        "/clinics/createclinic", "/clinics/updateclinic", "/clinics/deleteclinic/*",
+                    "/laboratories/admin/**", "/diagnostics/admin/**", "/discount/admin/**")
                 .hasAnyAuthority("CLINIC_ADMIN", "SUPER_ADMIN")
                 .antMatchers("/users/getall")
                 .hasAuthority("SUPER_ADMIN")
-                .antMatchers("/blog/createblog")
-                .hasAuthority("BLOGGER")
+                .antMatchers("/blog/admin/**")
+                .hasAnyAuthority("BLOGGER", "SUPER_ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .logout().logoutUrl("/users/logout").deleteCookies("JSESSIONID")

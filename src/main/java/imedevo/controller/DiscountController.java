@@ -45,18 +45,18 @@ public class DiscountController {
     return discountService.getByDoctors(doctorId);
   }
 
-  @PostMapping("/creatediscount")
+  @PostMapping("/admin/creatediscount")
   public Map<String, Object> addDiscount(@RequestBody Discount discount) {
     return discountService.addDiscount(discount);
   }
 
-  @PutMapping("/updatediscount")
+  @PutMapping("/admin/updatediscount")
   public Map<String, Object> updateDiscount(@RequestBody Discount discount)
       throws DiscountNotFoundException {
     return discountService.updateDiscount(discount);
   }
 
-  @DeleteMapping("/deletediscount")
+  @DeleteMapping("/admin/deletediscount")
   public void deleteDiscount(@RequestParam("id") Long id) throws DiscountNotFoundException {
     discountService.deleteDiscount(id);
   }
