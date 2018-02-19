@@ -12,8 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -22,7 +20,7 @@ public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
 
   @Column(name = "last_name")
   private String lastName;
@@ -67,16 +65,12 @@ public class User {
       inverseJoinColumns = @JoinColumn(name = "user_id"))
   private List<UserRole> userRoles;
 
-  @OneToOne
-  @PrimaryKeyJoinColumn
-  Doctor doctor;
-
   public User() {
   }
 
   public User(String firstName, String lastName, String phone, String email,
       String password, String city, String house, String street, String patronymic, String sex,
-      Date birthDate, Doctor doctor, String dateOfRegistration) {
+      Date birthDate, String dateOfRegistration) {
     this.lastName = lastName;
     this.firstName = firstName;
     this.patronymic = patronymic;
@@ -89,7 +83,6 @@ public class User {
     this.patronymic = patronymic;
     this.sex = sex;
     this.birthDate = birthDate;
-    this.doctor = doctor;
     this.dateOfRegistration = dateOfRegistration;
   }
 
@@ -109,7 +102,6 @@ public class User {
         ", birthDate=" + birthDate +
         ", dateOfRegistration=" + dateOfRegistration +
         ", userRoles=" + userRoles +
-        ", doctor=" + doctor +
         '}';
   }
 

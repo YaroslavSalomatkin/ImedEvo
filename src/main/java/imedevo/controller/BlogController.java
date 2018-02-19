@@ -26,18 +26,18 @@ public class BlogController {
         return blogService.getById(id);
     }
 
-    @PostMapping("/createblog")
+    @PostMapping("/admin/createblog")
     public Map<String, Object> createBlog(@RequestBody Blog blog) {
         return blogService.save(blog);
     }
 
 
-    @PutMapping("/updateblog")
+    @PutMapping("/admin/updateblog")
     public Map<String, Object> updateBlog(@RequestBody Blog blog) { return blogService.updateBlog(blog);
     }
 
 
-    @DeleteMapping("/deleteblog/{id}")
+    @DeleteMapping("/admin/deleteblog/{id}")
     public void deleteClinic(@PathVariable Long id) throws BlogNotFoundException {
         blogService.deleteBlog(id);
     }

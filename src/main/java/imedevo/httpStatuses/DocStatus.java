@@ -17,6 +17,7 @@ public enum DocStatus {
   REGISTRATION_ERROR_INCORRECT_EXPERIENCE_VALUE(806,
       "You entered an incorrect value in experience field"),
   REGISTRATION_ERROR_USER_NOT_EXIST(807, "This user does not exist"),
+  REGISTRATION_ERROR_DOCTOR_ALREADY(808, "This user already has role DOCTOR"),
 
   // login status
   LOGIN_OK(810, "Login success."),

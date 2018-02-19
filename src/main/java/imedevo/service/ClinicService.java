@@ -44,7 +44,7 @@ public class ClinicService {
         return map;
     }
     if (clinic.getEmail() == null) {
-        map.put("status", HospitalStatus.REGISTRATION_ERROR_INCORRECT_EMAIL);
+        map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_EMAIL);
         return map;
     }
 

@@ -45,7 +45,7 @@ public class LaboratoryService {
       return map;
     }
 
-    if (laboratory.getName() == null | laboratory.getName().length() < 3) {
+    if (laboratory.getName() == null | laboratory.getName().trim().length() < 3) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
       return map;
     }
@@ -55,12 +55,12 @@ public class LaboratoryService {
       return map;
     }
 
-    if (laboratory.getAddress() == null | laboratory.getAddress().length() < 8) {
+    if (laboratory.getAddress() == null | laboratory.getAddress().trim().length() < 8) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
       return map;
     }
 
-    if (laboratory.getDescription() == null | laboratory.getDescription().length() < 5) {
+    if (laboratory.getDescription() == null | laboratory.getDescription().trim().length() < 5) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_DESCRIPTION);
       return map;
     }
@@ -86,6 +86,52 @@ public class LaboratoryService {
       Field[] fields = updatedLaboratory.getClass().getDeclaredFields();
       AccessibleObject.setAccessible(fields, true);
       for (Field field : fields) {
+        if (field.getName().equals("id") || field.getName().equals("rating") ||
+            field.getName().equals("registrationDate") || field.getName().equals("latitude") ||
+            field.getName().equals("longitude")) {
+          continue;
+        }
+
+        if (field.getName().equals("name")) {
+          if (ReflectionUtils.getField(field, updatedLaboratory) != null &&
+              ReflectionUtils.getField(field, updatedLaboratory).toString().trim().length() < 3) {
+            map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
+            return map;
+          }
+        }
+
+        if (field.getName().equals("medicalLicense")) {
+          if (ReflectionUtils.getField(field, updatedLaboratory) != null &&
+              ReflectionUtils.getField(field, updatedLaboratory).toString().trim().length() < 5) {
+            map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_MEDICAL_LECENSE);
+            return map;
+          }
+        }
+
+        if (field.getName().equals("address")) {
+          if (ReflectionUtils.getField(field, updatedLaboratory) != null &&
+              ReflectionUtils.getField(field, updatedLaboratory).toString().trim().length() < 5) {
+            map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
+            return map;
+          }
+        }
+
+        if (field.getName().equals("description")) {
+          if (ReflectionUtils.getField(field, updatedLaboratory) != null &&
+              ReflectionUtils.getField(field, updatedLaboratory).toString().trim().length() < 5) {
+            map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_DESCRIPTION);
+            return map;
+          }
+        }
+
+        if (field.getName().equals("services")) {
+          if (ReflectionUtils.getField(field, updatedLaboratory) != null &&
+              ReflectionUtils.getField(field, updatedLaboratory).toString().trim().length() < 5) {
+            map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_SERVICES);
+            return map;
+          }
+        }
+
         Object laboratoryFromDbValue = ReflectionUtils.getField(field, updatedLaboratory);
         if (laboratoryFromDbValue != null) {
           ReflectionUtils.setField(field, laboratoryFromDb, laboratoryFromDbValue);

@@ -1,11 +1,5 @@
 package imedevo.controller;
 
-import imedevo.httpStatuses.AccessDeniedException;
-import imedevo.httpStatuses.UserNotFoundException;
-import imedevo.model.User;
-import imedevo.service.UserService;
-import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +12,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Map;
+
+import imedevo.httpStatuses.AccessDeniedException;
+import imedevo.httpStatuses.UserNotFoundException;
+import imedevo.model.ChangePassword;
+import imedevo.model.User;
+import imedevo.service.UserService;
 
 @RestController
 @RequestMapping("/users")
@@ -48,7 +51,6 @@ public class UserController {
   }
 
   @PutMapping("/updateuser")
-
   public Map<String, Object> updateUser(@RequestBody User user) throws UserNotFoundException {
     return userService.updateUser(user);
   }
@@ -63,5 +65,11 @@ public class UserController {
   public Map<String, Object> login(@RequestParam(name = "email") String email,
       @RequestParam(name = "password") String password) {
     return userService.login(email, password);
+  }
+
+  @PostMapping("/changepassword")
+  public Map<String, Object> changePassword(@RequestBody ChangePassword changePassword)
+      throws AccessDeniedException {
+    return userService.changePassword(changePassword);
   }
 }

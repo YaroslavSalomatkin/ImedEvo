@@ -11,7 +11,7 @@ public enum HospitalStatus {
     REGISTRATION_ERROR_INCORRECT_PASSWORD(901, "You entered an incorrect password"),
     REGISTRATION_ERROR_DUPLICATE_USERS(902, "User with such e-mail already exist"),
     REGISTRATION_ERROR_EMPTY_EMAIL(903, "Empty e-mail"),
-    REGISTRATION_ERROR_INCORRECT_EMAIL(904, "You enter incorrect e-mail"),
+    REGISTRATION_ERROR_EMPTY_SERVICES(904, "Error. Empty services"),
     REGISTRATION_ERROR_EMPTY_PHONE(905, "Error. Empty phone."),
     REGISTRATION_ERROR_EMPTY_DESCRIPTION(906, "Error. Empty Description."),
     REGISTRATION_ERROR_EMPTY_NAME(907, "Error. Empty name."),
