@@ -54,7 +54,7 @@ public class ClinicService {
           return map;
       }
 
-    if (clinic.getClinicName() == null | clinic.getClinicName().length() < 3) {
+    if (clinic.getClinicName() == null || clinic.getClinicName().length() < 3) {
         map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
         return map;
     }
@@ -64,7 +64,7 @@ public class ClinicService {
         return map;
     }
 
-    if (clinic.getAddress() == null | clinic.getAddress().length() < 8) {
+    if (clinic.getAddress() == null || clinic.getAddress().length() < 8) {
         map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
         return map;
     }
