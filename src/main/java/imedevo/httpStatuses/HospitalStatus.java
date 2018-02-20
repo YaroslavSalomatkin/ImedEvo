@@ -45,8 +45,8 @@ public enum HospitalStatus {
     ADD_DOC_FALSE(951, "Doctor wasn't added to the base."),
 
     // deleting profile
-    DELETE_PROFILE_SUCCESS(960, "Your profile was deleted.")
-    ;
+    DELETE_PROFILE_SUCCESS(960, "Your profile was deleted."),
+    REGISTRATION_ERROR_INCORRECT_PHONE(961," incorrect phone" );
 
     private int code;
 

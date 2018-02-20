@@ -11,7 +11,7 @@ public enum BlogStatus {
     REGISTRATION_ERROR_EMPTY_FIRSTNAME(611, "Empty field first name"),
     REGISTRATION_ERROR_EMPTY_LASTNAME(612, "Empty field last name"),
     REGISTRATION_ERROR_EMPTY_ARTICLENAME(613, "Empty article name"),
-    EDIT_BLOG_ERROR(614," EDIT BLOG ERROR")
+    EDIT_BLOG_ERROR(614," EDIT BLOG ERROR"),
     DELETE_PROFILE_SUCCESS(615, "Delete blog success"),
     DELETE_BLOG_ERROR(616,"Delete blog error")
 ;
