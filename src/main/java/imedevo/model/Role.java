@@ -6,8 +6,8 @@ public enum Role {
   CLINIC_ADMIN(3),
   SUPER_ADMIN(4),
   SYSTEM(5),
-  ANONYMOUS(6),
-  BLOGGER(7);
+  BLOGGER(6),
+  ANONYMOUS(7);
 
   private long id;
 
@@ -31,7 +31,7 @@ public enum Role {
         return SUPER_ADMIN;
       case 5:
         return SYSTEM;
-      case 7:
+      case 6:
         return BLOGGER;
       default:
         return ANONYMOUS;

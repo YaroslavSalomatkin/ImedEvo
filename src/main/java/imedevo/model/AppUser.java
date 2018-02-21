@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class AppUser {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,7 @@ public class User {
   private String phone;
 
   @Column(name = "email")
-  private String email;
+  private String username;
 
   @Column(name = "password")
   private String password;
@@ -71,17 +71,17 @@ public class User {
   @PrimaryKeyJoinColumn
   Doctor doctor;
 
-  public User() {
+  public AppUser() {
   }
 
-  public User(String firstName, String lastName, String phone, String email,
+  public AppUser(String firstName, String lastName, String phone, String email,
       String password, String city, String house, String street, String patronymic, String sex,
       Date birthDate, Doctor doctor, Date dateOfRegistration) {
     this.lastName = lastName;
     this.firstName = firstName;
     this.patronymic = patronymic;
     this.phone = phone;
-    this.email = email;
+    this.username = email;
     this.password = password;
     this.city = city;
     this.house = house;
@@ -101,7 +101,7 @@ public class User {
         ", firstName='" + firstName + '\'' +
         ", patronymic='" + patronymic + '\'' +
         ", phone='" + phone + '\'' +
-        ", email='" + email + '\'' +
+        ", email='" + username + '\'' +
         ", city='" + city + '\'' +
         ", house='" + house + '\'' +
         ", street='" + street + '\'' +
@@ -145,12 +145,12 @@ public class User {
     this.phone = phone;
   }
 
-  public String getEmail() {
-    return email;
+  public String getUsername() {
+    return username;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public String getPassword() {
