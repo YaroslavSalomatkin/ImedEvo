@@ -1,5 +1,6 @@
 package imedevo.service;
 
+import imedevo.httpStatuses.UserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import imedevo.httpStatuses.HospitalStatus;
 import imedevo.httpStatuses.NoSuchClinicException;
@@ -47,8 +49,12 @@ public class ClinicService {
         map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_EMAIL);
         return map;
     }
+      if (!isEmailValid(clinic.getEmail())) {
+          map.put("status", HospitalStatus.REGISTRATION_ERROR_INCORRECT_EMAIL);
+          return map;
+      }
 
-    if (clinic.getClinicName() == null) {
+    if (clinic.getClinicName() == null || clinic.getClinicName().length() < 3) {
         map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
         return map;
     }
@@ -58,10 +64,20 @@ public class ClinicService {
         return map;
     }
 
-    if (clinic.getAddress() == null) {
+    if (clinic.getAddress() == null || clinic.getAddress().length() < 8) {
         map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
         return map;
     }
+      if (clinic.getPhoneNumber() == null) {
+          map.put("status", HospitalStatus.REGISTRATION_ERROR_INCORRECT_PHONE);
+          return map;
+      }
+      if (clinic.getPhoneNumber().length() != 13 || clinic.getPhoneNumber().charAt(0) != '+') {
+          map.put("status", UserStatus.REGISTRATION_ERROR_PHONE_INVALID);
+          return map;
+      }
+
+
     map.put("status", HospitalStatus.REGISTRATION_OK);
     map.put("clinic", clinicRepository.save(clinic));
     return map;
@@ -105,5 +121,9 @@ public class ClinicService {
       mayBeClinic.ifPresent(clinic -> clinicRepository.delete(clinic.getId()));
       return mayBeClinic;
   }
+    private boolean isEmailValid(String email) {
+        Pattern pattern = Pattern.compile("\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*\\.\\w{2,4}");
+        return pattern.matcher(email).matches();
+    }
 }
 
