@@ -45,7 +45,7 @@ public class DiagnosticService {
       return map;
     }
 
-    if (diagnostic.getName() == null | diagnostic.getName().trim().length() < 3) {
+    if (diagnostic.getName() == null || diagnostic.getName().trim().length() < 3) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
       return map;
     }
@@ -55,12 +55,12 @@ public class DiagnosticService {
       return map;
     }
 
-    if (diagnostic.getAddress() == null | diagnostic.getAddress().trim().length() < 8) {
+    if (diagnostic.getAddress() == null || diagnostic.getAddress().trim().length() < 8) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
       return map;
     }
 
-    if (diagnostic.getDescription() == null | diagnostic.getDescription().trim().length() < 5) {
+    if (diagnostic.getDescription() == null || diagnostic.getDescription().trim().length() < 5) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_DESCRIPTION);
       return map;
     }
