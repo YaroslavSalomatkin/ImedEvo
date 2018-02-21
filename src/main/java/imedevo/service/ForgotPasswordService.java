@@ -45,7 +45,7 @@ public class ForgotPasswordService {
     mailSender.sendMail(token.getUserEmail(), "Сброс пароля iMED",
         "Мы узнали, что ваш пароль был утерян..."
             + "\n\nНо не стоит беспокоиться! Вы можете использовать ссылку в течении 24 часов для его восстановления:"
-            + "\nhttp://54.37.125.178:8080/forgot/resetpassword.html?token=" + token.getToken()
+            + "\nhttp://www.imed.od.ua/forgot/resetpassword?token=" + token.getToken()
             + "\n\nЕсли ссылка не будет использована в указанный срок - она будет аннулирована."
             + "\n\nС уважением,\nкоманда проекта iMED");
   }

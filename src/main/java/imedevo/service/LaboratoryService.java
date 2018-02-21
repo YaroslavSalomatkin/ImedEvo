@@ -45,7 +45,7 @@ public class LaboratoryService {
       return map;
     }
 
-    if (laboratory.getName() == null | laboratory.getName().trim().length() < 3) {
+    if (laboratory.getName() == null || laboratory.getName().trim().length() < 3) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
       return map;
     }
@@ -55,12 +55,12 @@ public class LaboratoryService {
       return map;
     }
 
-    if (laboratory.getAddress() == null | laboratory.getAddress().trim().length() < 8) {
+    if (laboratory.getAddress() == null || laboratory.getAddress().trim().length() < 8) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
       return map;
     }
 
-    if (laboratory.getDescription() == null | laboratory.getDescription().trim().length() < 5) {
+    if (laboratory.getDescription() == null || laboratory.getDescription().trim().length() < 5) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_DESCRIPTION);
       return map;
     }

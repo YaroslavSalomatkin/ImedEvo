@@ -159,16 +159,12 @@ public class UserService {
 
   public Map<String, Object> uploadImage(long userId, MultipartFile imageFile) {
 
-    System.out.println("userId = " + userId);
-    System.out.println("file = " + imageFile.getOriginalFilename());
-
     String fileName = "";
     String link = "";
+    String uploadImageFolder = "testfolder";
 
     Logger logger = LogManager.getLogger(getClass());
-    String uploadImageFolder = "testfolder";
     Map<String, Object> map = new HashMap<>();
-
     if (!imageFile.isEmpty()) {
       try {
         if (!Files.exists(Paths.get(uploadImageFolder))) {
