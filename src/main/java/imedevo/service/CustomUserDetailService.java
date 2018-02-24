@@ -1,15 +1,11 @@
 package imedevo.service;
 
 import imedevo.model.AppUser;
-import imedevo.model.Role;
 import imedevo.model.UserRole;
 import imedevo.repository.UserRepository;
 import imedevo.repository.UserRoleRepository;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import javax.swing.SwingWorker.StateValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -35,23 +31,29 @@ public class CustomUserDetailService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    AppUser appUser = Optional.ofNullable(
-        userRepository.findByUsername(username))
-        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//    AppUser appUser = Optional.ofNullable(
+//        userRepository.findByUsername(username))
+//        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+    AppUser appUser = loadAppUser(username);
 
     List<UserRole> userRoles = userRoleRepository.findByUserId(appUser.getId());
 
     List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList();
 
-    if ( userRoles != null ) {
+    if (userRoles != null) {
       for (UserRole userRole : userRoles) {
         String roleName = userRole.getRoleName();
         authorityList.add(new SimpleGrantedAuthority("ROLE_" + roleName));
       }
     }
-//    List<GrantedAuthority> authorityListDoctor = AuthorityUtils.createAuthorityList("USER", "DOCTOR");
-//    List<GrantedAuthority> authorityListSuperAdmin = AuthorityUtils.createAuthorityList("SUPER_ADMIN");
-
     return new User(appUser.getUsername(), appUser.getPassword(), authorityList);
+  }
+
+  public AppUser loadAppUser(String username){
+    AppUser appUser = Optional.ofNullable(
+        userRepository.findByUsername(username))
+        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    return appUser;
   }
 }

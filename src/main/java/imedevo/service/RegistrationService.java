@@ -1,24 +1,22 @@
 package imedevo.service;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.stereotype.Service;
-
+import imedevo.httpStatuses.UserStatus;
+import imedevo.model.AppUser;
+import imedevo.model.Role;
+import imedevo.model.UserRole;
+import imedevo.repository.UserRepository;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import imedevo.httpStatuses.UserStatus;
-import imedevo.model.Role;
-import imedevo.model.AppUser;
-import imedevo.model.UserRole;
-import imedevo.repository.UserRepository;
 import javax.transaction.Transactional;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RegistrationService {
@@ -36,6 +34,7 @@ public class RegistrationService {
 
   @Autowired
   private RolesService rolesService;
+
 
   @Transactional
   public Map<String, Object> createNewUserInDB(AppUser appUser) {
@@ -118,4 +117,5 @@ public class RegistrationService {
   private boolean isCorrectPassword(AppUser appUser) {
     return appUser.getPassword() != null && appUser.getPassword().length() >= lengthOfUserPassword;
   }
+
 }

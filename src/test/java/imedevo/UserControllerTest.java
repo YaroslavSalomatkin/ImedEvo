@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import imedevo.controller.UserController;
-import imedevo.model.User;
+import imedevo.model.AppUser;
 import imedevo.repository.UserRepository;
 import imedevo.service.UserService;
 
@@ -34,8 +34,8 @@ public class UserControllerTest {
   @MockBean
   private UserService userService;
   private UserRepository userRepository;
-  private User user = new User();
-  private List<User> users = new ArrayList<>();
+  private AppUser appUser = new AppUser();
+  private List<AppUser> users = new ArrayList<>();
 
   public String objectToJson(Object object) throws Exception {
     ObjectMapper mapper = new ObjectMapper();
@@ -44,10 +44,10 @@ public class UserControllerTest {
 
   @Test
   public void getAll() throws Exception {
-    when(userService.getAll()).thenReturn(Arrays.asList(user));
+    when(userService.getAll()).thenReturn(Arrays.asList(appUser));
 
     mockMvc.perform(get("/users/getall"))
         .andDo(print())
-        .andExpect(content().string(objectToJson(Arrays.asList(user))));
+        .andExpect(content().string(objectToJson(Arrays.asList(appUser))));
   }
 }

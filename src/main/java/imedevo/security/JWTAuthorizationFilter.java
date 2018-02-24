@@ -1,6 +1,9 @@
 package imedevo.security;
 
-import imedevo.model.AppUser;
+import static imedevo.security.SecurityConstants.HEADER_STRING;
+import static imedevo.security.SecurityConstants.SECRET;
+import static imedevo.security.SecurityConstants.TOKEN_PREFIX;
+
 import imedevo.service.CustomUserDetailService;
 import io.jsonwebtoken.Jwts;
 import java.io.IOException;
@@ -13,8 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
-import static imedevo.security.SecurityConstants.*;
 
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {

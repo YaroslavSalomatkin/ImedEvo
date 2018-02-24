@@ -1,9 +1,14 @@
 package imedevo.security;
 
-import static imedevo.security.SecurityConstants.*;
+import static imedevo.security.SecurityConstants.EXPIRATION_TIME;
+import static imedevo.security.SecurityConstants.HEADER_STRING;
+import static imedevo.security.SecurityConstants.SECRET;
+import static imedevo.security.SecurityConstants.TOKEN_PREFIX;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import imedevo.httpStatuses.UserStatus;
 import imedevo.model.AppUser;
+import imedevo.service.CustomUserDetailService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.io.IOException;
@@ -15,6 +20,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,8 +34,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
   private AuthenticationManager authenticationManager;
 
-  public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+  private CustomUserDetailService customUserDetailService;
+
+  public JWTAuthenticationFilter(AuthenticationManager authenticationManager,
+      CustomUserDetailService customUserDetailService) {
     this.authenticationManager = authenticationManager;
+    this.customUserDetailService = customUserDetailService;
   }
 
   @Override
@@ -50,14 +60,31 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     ZonedDateTime expirationTimeUTC = ZonedDateTime.now(ZoneOffset.UTC).plus(EXPIRATION_TIME,
         ChronoUnit.MILLIS);
-    String username = ((org.springframework.security.core.userdetails.User) authResult.getPrincipal())
+    String username = ((org.springframework.security.core.userdetails.User) authResult
+        .getPrincipal())
         .getUsername();
+
     String token = Jwts.builder()
         .setSubject(username)
         .setExpiration(Date.from(expirationTimeUTC.toInstant()))
         .signWith(SignatureAlgorithm.HS256, SECRET)
         .compact();
-    response.getWriter().write(token);
+
+    AppUser appUser = customUserDetailService.loadAppUser(username);
+
+    JSONObject jsonObject = new JSONObject();
+
+    jsonObject.put("user", appUser);
+    jsonObject.put("status", UserStatus.LOGIN_OK);
+    jsonObject.put("token", token);
+
+    String val = jsonObject.toString();
+
+//    response.addHeader("Accept", "application/json");
+    response.addHeader("Content-type", "application/json");
+    response.getWriter().write(val);
+
+//    response.getWriter().write(token);
     response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
   }
 }

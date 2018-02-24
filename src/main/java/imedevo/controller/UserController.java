@@ -33,7 +33,7 @@ public class UserController {
   private UserService userService;
 
   @GetMapping("/getall")
-  @PreAuthorize("hasRole('SUPER_ADMIN')")
+  @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
   public List<AppUser> getAllUsers() {
     return userService.getAll();
   }
@@ -73,6 +73,12 @@ public class UserController {
   public Map<String, Object> login(@RequestParam(name = "email") String email,
       @RequestParam(name = "password") String password) throws ServletException {
     return userService.login(email, password);
+  }
+
+  @PostMapping("/getbyusername")
+  @PreAuthorize("hasAnyRole('USER', 'DOCTOR', 'CLINIC_ADMIN', 'SUPER_ADMIN', 'BLOGGER')")
+  public AppUser getUserByUsername(@RequestParam(name = "username") String username) throws UserNotFoundException {
+    return userService.getByUsername(username);
   }
 
 }

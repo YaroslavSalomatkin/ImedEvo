@@ -4,6 +4,7 @@ import imedevo.configuration.WebSecurityConfig;
 import imedevo.security.JWTAuthenticationFilter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -207,5 +208,14 @@ public class UserService {
 
     }
     return map;
+  }
+
+  public AppUser getByUsername(String username) throws UserNotFoundException {
+    AppUser appUser = userRepository.findByUsername(username);
+    if (appUser == null) {
+      throw new UserNotFoundException();
+    }
+    appUser.setUserRoles(rolesService.getUserRoles(appUser.getId()));
+    return appUser;
   }
 }

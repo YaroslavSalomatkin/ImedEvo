@@ -40,7 +40,7 @@ public class FavouriteDoctorService {
     if (!favDoctors.isEmpty()) {
       for (FavouriteDoctor favouriteDoctor : favDoctors) {
         Doctor doctor = doctorRepository.findByUserId(favouriteDoctor.getDoctorId());
-        doctor.getAppUser().setUserRoles(rolesService.getUserRoles(doctor.getUserId()));
+        doctor.getUser().setUserRoles(rolesService.getUserRoles(doctor.getUserId()));
         doctors.add(doctor);
       }
     }

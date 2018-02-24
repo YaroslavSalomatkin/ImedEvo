@@ -44,7 +44,7 @@ public class DoctorService {
   public List<Doctor> getAll() {
     List<Doctor> listOfDoctors = doctorRepository.findAll();
     for (Doctor doctor : listOfDoctors) {
-      doctor.getAppUser().setUserRoles(rolesService.getUserRoles(doctor.getUserId()));
+      doctor.getUser().setUserRoles(rolesService.getUserRoles(doctor.getUserId()));
     }
     return listOfDoctors;
   }
@@ -97,7 +97,7 @@ public class DoctorService {
       map.put("status", DocStatus.REGISTRATION_ERROR_USER_NOT_EXIST);
       return map;
     }
-    doctor.setAppUser(userService.getById(doctor.getUserId()));
+    doctor.setUser(userService.getById(doctor.getUserId()));
 
     map.put("status", DocStatus.REGISTRATION_OK);
     map.put("doctor", doctorRepository.save(doctor));
@@ -121,7 +121,7 @@ public class DoctorService {
 
     if (updatedDoctor.getUserId() != 0) {
 
-      updatedDoctor.setAppUser(userService.getById(updatedDoctor.getUserId()));
+      updatedDoctor.setUser(userService.getById(updatedDoctor.getUserId()));
 
       Doctor checkDoctorFromDb = doctorRepository.findByUserId(updatedDoctor.getUserId());
       if (checkDoctorFromDb != null && updatedDoctor.getUserId() != checkDoctorFromDb.getUserId()) {

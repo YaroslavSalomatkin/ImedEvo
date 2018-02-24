@@ -31,7 +31,7 @@ public class Doctor {
   private long userId;
 
   @OneToOne(mappedBy = "doctor")
-  private AppUser appUser;
+  private AppUser user;
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
@@ -63,7 +63,7 @@ public class Doctor {
   private List<DoctorClinic> doctorClinics;
 
   public Doctor() {
-    this.appUser = null;
+    this.user = null;
     this.specialization = new ArrayList<>();
     this.doctorQualification = null;
     this.education = null;
@@ -74,11 +74,11 @@ public class Doctor {
     this.reting = 0;
   }
 
-  public Doctor(long userId, AppUser appUser,
+  public Doctor(long userId, AppUser user,
       String doctorQualification, String education, String doctorAchievements, int price,
       int workExperience, boolean pediatrician, int reting) {
     this.userId = userId;
-    this.appUser = appUser;
+    this.user = user;
     this.specialization = new ArrayList<>();
     this.doctorQualification = doctorQualification;
     this.education = education;
@@ -105,12 +105,12 @@ public class Doctor {
     this.userId = userId;
   }
 
-  public AppUser getAppUser() {
-    return appUser;
+  public AppUser getUser() {
+    return user;
   }
 
-  public void setAppUser(AppUser AppUser) {
-    this.appUser = AppUser;
+  public void setUser(AppUser AppUser) {
+    this.user = AppUser;
   }
 
   public List<Specialization> getSpecialization() {

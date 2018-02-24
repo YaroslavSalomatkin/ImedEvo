@@ -73,6 +73,8 @@ public class UserRole {
         && Objects.equals(roleId, anotherUserRole.getRoleId());
   }
 
+
+
   public String getRoleName() {
     switch ((int) roleId) {
       case 1:

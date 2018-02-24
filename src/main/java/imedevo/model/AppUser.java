@@ -2,7 +2,6 @@ package imedevo.model;
 
 import java.sql.Date;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -108,7 +107,7 @@ public class AppUser {
         ", sex='" + sex + '\'' +
         ", birthDate=" + birthDate +
         ", dateOfRegistration=" + dateOfRegistration +
-        ", userRoles=" + userRoles +
+//        ", userRoles=" + userRoles +
         ", doctor=" + doctor +
         '}';
   }
