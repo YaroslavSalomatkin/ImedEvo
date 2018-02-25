@@ -16,6 +16,18 @@ public class ImedEvoApplication {
     return new BCryptPasswordEncoder();
   }
 
+
+  @Bean
+  public WebMvcConfigurer corsConfig() {
+    return new WebMvcConfigurerAdapter() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+            .allowedMethods("GET", "POST", "PUT", "DELETE");
+      }
+    };
+  }
+
   public static void main(String[] args) {
     SpringApplication.run(new Object[]{ImedEvoApplication.class, ScheduledTasks.class}, args);
   }
@@ -30,18 +42,4 @@ public class ImedEvoApplication {
 //    };
 //  }
 
-  @Bean
-  public WebMvcConfigurer corsConfig() {
-    return new WebMvcConfigurerAdapter() {
-      @Override
-      public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
-            .allowedOrigins("http://domain2.com")
-            .allowedMethods("PUT", "DELETE")
-            .allowedHeaders("header1", "header2", "header3")
-            .exposedHeaders("header1", "header2")
-            .allowCredentials(false).maxAge(3600);
-      }
-    };
-  }
 }

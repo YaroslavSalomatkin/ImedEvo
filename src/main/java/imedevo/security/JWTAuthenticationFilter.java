@@ -8,20 +8,29 @@ import static imedevo.security.SecurityConstants.TOKEN_PREFIX;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import imedevo.httpStatuses.UserStatus;
 import imedevo.model.AppUser;
+import imedevo.repository.UserRepository;
 import imedevo.service.CustomUserDetailService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.hibernate.SessionFactory;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,6 +44,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
   private AuthenticationManager authenticationManager;
 
   private CustomUserDetailService customUserDetailService;
+
+  @Autowired
+  private SessionFactory sessionFactory;
+
+  @Autowired
+  UserRepository userRepository;
 
   public JWTAuthenticationFilter(AuthenticationManager authenticationManager,
       CustomUserDetailService customUserDetailService) {
@@ -72,19 +87,26 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     AppUser appUser = customUserDetailService.loadAppUser(username);
 
-    JSONObject jsonObject = new JSONObject();
+    response.setContentType("application/json");
+    response.setCharacterEncoding("utf-8");
+    PrintWriter out = response.getWriter();
 
-    jsonObject.put("user", appUser);
-    jsonObject.put("status", UserStatus.LOGIN_OK);
-    jsonObject.put("token", token);
+    JSONObject jsonResponse = new JSONObject();
+    Map<String, Object> mapResponse = new HashMap<>();
+    mapResponse.put("user", appUser);
+    mapResponse.put("status", UserStatus.LOGIN_OK);
+    mapResponse.put("token", TOKEN_PREFIX + token);
 
-    String val = jsonObject.toString();
+    jsonResponse.put("response", mapResponse);
 
-//    response.addHeader("Accept", "application/json");
-    response.addHeader("Content-type", "application/json");
-    response.getWriter().write(val);
+    // finally output the json string
+    out.print(jsonResponse.toString());
 
-//    response.getWriter().write(token);
+//    response.setHeader("Accept", "application/json");
+//    response.setHeader("Content-type", "application/json");
+//    response.getWriter().write(mapResponse);
+
+   //    response.getWriter().write(token);
     response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
   }
 }

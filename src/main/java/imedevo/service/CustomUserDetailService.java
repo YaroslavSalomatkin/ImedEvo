@@ -50,10 +50,16 @@ public class CustomUserDetailService implements UserDetailsService {
     return new User(appUser.getUsername(), appUser.getPassword(), authorityList);
   }
 
-  public AppUser loadAppUser(String username){
-    AppUser appUser = Optional.ofNullable(
-        userRepository.findByUsername(username))
-        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    return appUser;
+  public AppUser loadAppUser(String username)throws UsernameNotFoundException{
+//    AppUser appUser = Optional.ofNullable(
+//        userRepository.findByUsername(username))
+//        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+      AppUser appUser = userRepository.findByUsername(username);
+      if(appUser == null){
+        throw new UsernameNotFoundException("User no found");
+      }
+      return appUser;
+
   }
 }

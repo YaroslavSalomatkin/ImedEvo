@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -47,9 +48,9 @@ public class LaboratoryController {
     return laboratoryService.updateLaboratory(laboratory);
   }
 
-  @DeleteMapping("/admin/deletelaboratory/{id}")
+  @DeleteMapping("/admin/deletelaboratory")
   @PreAuthorize("hasAnyRole('CLINIC_ADMIN', 'SUPER_ADMIN')")
-  public void deleteLaboratory(@PathVariable Long id) {
+  public void deleteLaboratory(@RequestParam ("id") Long id) {
     laboratoryService.deleteLaboratory(id).orElseThrow(NoSuchClinicException::new);
   }
 

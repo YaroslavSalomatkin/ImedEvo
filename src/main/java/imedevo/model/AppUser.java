@@ -11,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -21,7 +19,7 @@ public class AppUser {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
 
   @Column(name = "last_name")
   private String lastName;
@@ -57,7 +55,7 @@ public class AppUser {
   private Date birthDate;
 
   @Column(name = "date_of_registration")
-  private Date dateOfRegistration;
+  private String dateOfRegistration;
 
   @OneToMany(fetch = FetchType.LAZY)
   @JoinTable(
@@ -66,21 +64,17 @@ public class AppUser {
       inverseJoinColumns = @JoinColumn(name = "user_id"))
   private List<UserRole> userRoles;
 
-  @OneToOne
-  @PrimaryKeyJoinColumn
-  Doctor doctor;
-
   public AppUser() {
   }
 
-  public AppUser(String firstName, String lastName, String phone, String email,
+  public AppUser(String firstName, String lastName, String phone, String username,
       String password, String city, String house, String street, String patronymic, String sex,
-      Date birthDate, Doctor doctor, Date dateOfRegistration) {
+      Date birthDate, String dateOfRegistration) {
     this.lastName = lastName;
     this.firstName = firstName;
     this.patronymic = patronymic;
     this.phone = phone;
-    this.username = email;
+    this.username = username;
     this.password = password;
     this.city = city;
     this.house = house;
@@ -88,13 +82,12 @@ public class AppUser {
     this.patronymic = patronymic;
     this.sex = sex;
     this.birthDate = birthDate;
-    this.doctor = doctor;
     this.dateOfRegistration = dateOfRegistration;
   }
 
   @Override
   public String toString() {
-    return "User{" +
+    return "{" +
         "id=" + id +
         ", lastName='" + lastName + '\'' +
         ", firstName='" + firstName + '\'' +
@@ -108,7 +101,6 @@ public class AppUser {
         ", birthDate=" + birthDate +
         ", dateOfRegistration=" + dateOfRegistration +
 //        ", userRoles=" + userRoles +
-        ", doctor=" + doctor +
         '}';
   }
 
@@ -216,11 +208,11 @@ public class AppUser {
     this.userRoles = userRoles;
   }
 
-  public Date getDateOfRegistration() {
+  public String getDateOfRegistration() {
     return dateOfRegistration;
   }
 
-  public void setDateOfRegistration(Date dateOfRegistration) {
+  public void setDateOfRegistration(String dateOfRegistration) {
     this.dateOfRegistration = dateOfRegistration;
   }
 }

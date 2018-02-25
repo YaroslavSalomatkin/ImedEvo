@@ -2,17 +2,14 @@ package imedevo.controller;
 
 import imedevo.httpStatuses.AccessDeniedException;
 import imedevo.httpStatuses.UserNotFoundException;
-import imedevo.httpStatuses.UserStatus;
 import imedevo.model.AppUser;
-import imedevo.repository.UserRepository;
+import imedevo.model.ChangePassword;
 import imedevo.service.UserService;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -75,10 +71,10 @@ public class UserController {
     return userService.login(email, password);
   }
 
-  @PostMapping("/getbyusername")
+  @PostMapping("/changepassword")
   @PreAuthorize("hasAnyRole('USER', 'DOCTOR', 'CLINIC_ADMIN', 'SUPER_ADMIN', 'BLOGGER')")
-  public AppUser getUserByUsername(@RequestParam(name = "username") String username) throws UserNotFoundException {
-    return userService.getByUsername(username);
+  public Map<String, Object> changePassword(@RequestBody ChangePassword changePassword)
+      throws AccessDeniedException {
+    return userService.changePassword(changePassword);
   }
-
 }

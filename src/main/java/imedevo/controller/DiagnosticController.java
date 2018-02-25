@@ -1,5 +1,10 @@
 package imedevo.controller;
 
+import imedevo.httpStatuses.NoSuchClinicException;
+import imedevo.model.Diagnostic;
+import imedevo.service.DiagnosticService;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,14 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Map;
-
-import imedevo.httpStatuses.NoSuchClinicException;
-import imedevo.model.Diagnostic;
-import imedevo.service.DiagnosticService;
 
 @RestController
 @RequestMapping("/diagnostics")
@@ -47,9 +46,9 @@ public class DiagnosticController {
     return diagnosticService.updateDiagnostic(diagnostic);
   }
 
-  @DeleteMapping("/admin/deletediagnostic/{id}")
+  @DeleteMapping("/admin/deletediagnostic")
   @PreAuthorize("hasAnyRole('CLINIC_ADMIN', 'SUPER_ADMIN')")
-  public void deleteDiagnostic(@PathVariable Long id) {
+  public void deleteDiagnostic(@RequestParam("id") Long id) {
     diagnosticService.deleteDiagnostic(id).orElseThrow(NoSuchClinicException::new);
   }
 

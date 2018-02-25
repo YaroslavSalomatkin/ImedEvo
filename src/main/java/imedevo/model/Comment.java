@@ -1,5 +1,7 @@
 package imedevo.model;
 
+import java.sql.Time;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,20 +29,24 @@ public class Comment {
   @Column(name = "text")
   private String text;
 
-  @Column(name = "date_time")
-  private String dateTime;
+  @Column(name = "date")
+  private String date;
+
+  @Column(name = "time")
+  private Time time;
 
   public Comment() {
   }
 
-  public Comment(long id, long userId, long doctorId, long clinicId, String text,
-      String dateTime) {
+  public Comment(long id, long userId, long doctorId, long clinicId, String text, String date,
+      Time time) {
     this.id = id;
     this.userId = userId;
     this.doctorId = doctorId;
     this.clinicId = clinicId;
     this.text = text;
-    this.dateTime = dateTime;
+    this.date = date;
+    this.time = time;
   }
 
   public long getId() {
@@ -83,12 +89,20 @@ public class Comment {
     this.text = text;
   }
 
-  public String getDateTime() {
-    return dateTime;
+  public String getDate() {
+    return date;
   }
 
-  public void setDateTime(String dateTime) {
-    this.dateTime = dateTime;
+  public void setDate(String date) {
+    this.date = date;
+  }
+
+  public Time getTime() {
+    return time;
+  }
+
+  public void setTime(Time time) {
+    this.time = time;
   }
 
   @Override
@@ -99,7 +113,8 @@ public class Comment {
         ", doctorId=" + doctorId +
         ", clinicId=" + clinicId +
         ", text='" + text + '\'' +
-        ", dateTime=" + dateTime +
+        ", date=" + date +
+        ", time=" + time +
         '}';
   }
 }

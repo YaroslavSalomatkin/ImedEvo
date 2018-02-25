@@ -1,5 +1,6 @@
 package imedevo.configuration;
 
+
 import imedevo.security.JWTAuthenticationFilter;
 import imedevo.security.JWTAuthorizationFilter;
 import imedevo.service.CustomUserDetailService;
@@ -13,7 +14,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 /**
  * Spring security configuration.
@@ -75,7 +75,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        .hasAnyRole("CLINIC_ADMIN", "SUPER_ADMIN")
 //        .antMatchers("/users/getall")
 //        .hasRole("SUPER_ADMIN")
-
         .and()
         .addFilter(new JWTAuthenticationFilter(authenticationManager(), customUserDetailService))
         .addFilter(new JWTAuthorizationFilter(authenticationManager(), customUserDetailService));

@@ -6,6 +6,7 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class DiagnosticService {
       return map;
     }
 
-    if (diagnostic.getName() == null) {
+    if (diagnostic.getName() == null | diagnostic.getName().trim().length() < 3) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
       return map;
     }
@@ -54,32 +55,28 @@ public class DiagnosticService {
       return map;
     }
 
-    if (diagnostic.getAddress() == null) {
+    if (diagnostic.getAddress() == null | diagnostic.getAddress().trim().length() < 8) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
       return map;
     }
 
-    if (diagnostic.getDescription() == null) {
+    if (diagnostic.getDescription() == null | diagnostic.getDescription().trim().length() < 5) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_DESCRIPTION);
       return map;
     }
-
+    diagnostic.setRegistrationDate(LocalDate.now().toString());
     map.put("status", HospitalStatus.REGISTRATION_OK);
-    map.put("clinic", diagnosticRepository.save(diagnostic));
+    map.put("diagnostic", diagnosticRepository.save(diagnostic));
     return map;
   }
 
   @Transactional
   public Map<String, Object> updateDiagnostic(Diagnostic updatedDiagnostic) {
     Map<String, Object> map = new HashMap<>();
-    if (updatedDiagnostic.getEmail() != null) {
-      Diagnostic checkDiagnosticFromDb = diagnosticRepository
-          .findByEmail(updatedDiagnostic.getEmail());
-      if (checkDiagnosticFromDb != null && updatedDiagnostic.getId() != checkDiagnosticFromDb
-          .getId()) {
-        map.put("status", HospitalStatus.EDIT_PROFILE_ERROR);
-        return map;
-      }
+
+    if (updatedDiagnostic.getId() == null) {
+      map.put("status", HospitalStatus.EDIT_PROFILE_ERROR);
+      return map;
     }
 
     Diagnostic diagnosticFromDb = diagnosticRepository.findOne(updatedDiagnostic.getId());
@@ -89,13 +86,59 @@ public class DiagnosticService {
       Field[] fields = updatedDiagnostic.getClass().getDeclaredFields();
       AccessibleObject.setAccessible(fields, true);
       for (Field field : fields) {
+        if (field.getName().equals("id") || field.getName().equals("rating") ||
+            field.getName().equals("registrationDate") || field.getName().equals("latitude") ||
+            field.getName().equals("longitude")) {
+          continue;
+        }
+
+        if (field.getName().equals("name")) {
+          if (ReflectionUtils.getField(field, updatedDiagnostic) != null &&
+              ReflectionUtils.getField(field, updatedDiagnostic).toString().trim().length() < 3) {
+            map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
+            return map;
+          }
+        }
+
+        if (field.getName().equals("medicalLicense")) {
+          if (ReflectionUtils.getField(field, updatedDiagnostic) != null &&
+              ReflectionUtils.getField(field, updatedDiagnostic).toString().trim().length() < 5) {
+            map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_MEDICAL_LECENSE);
+            return map;
+          }
+        }
+
+        if (field.getName().equals("address")) {
+          if (ReflectionUtils.getField(field, updatedDiagnostic) != null &&
+              ReflectionUtils.getField(field, updatedDiagnostic).toString().trim().length() < 5) {
+            map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
+            return map;
+          }
+        }
+
+        if (field.getName().equals("description")) {
+          if (ReflectionUtils.getField(field, updatedDiagnostic) != null &&
+              ReflectionUtils.getField(field, updatedDiagnostic).toString().trim().length() < 5) {
+            map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_DESCRIPTION);
+            return map;
+          }
+        }
+
+        if (field.getName().equals("services")) {
+          if (ReflectionUtils.getField(field, updatedDiagnostic) != null &&
+              ReflectionUtils.getField(field, updatedDiagnostic).toString().trim().length() < 5) {
+            map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_SERVICES);
+            return map;
+          }
+        }
+
         Object diagnosticFromDbValue = ReflectionUtils.getField(field, updatedDiagnostic);
         if (diagnosticFromDbValue != null) {
           ReflectionUtils.setField(field, diagnosticFromDb, diagnosticFromDbValue);
         }
       }
       map.put("status", HospitalStatus.EDIT_PROFILE_SUCCESS);
-      map.put("clinic", diagnosticRepository.save(diagnosticFromDb));
+      map.put("diagnostic", diagnosticRepository.save(diagnosticFromDb));
     }
     return map;
   }

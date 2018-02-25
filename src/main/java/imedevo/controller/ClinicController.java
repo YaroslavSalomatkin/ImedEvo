@@ -3,6 +3,10 @@ package imedevo.controller;
 import imedevo.httpStatuses.NoSuchClinicException;
 import imedevo.model.Clinic;
 import imedevo.service.ClinicService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +57,6 @@ public class ClinicController {
     clinicService.delete(id)
         .orElseThrow(NoSuchClinicException::new);
   }
+
 
 }

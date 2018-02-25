@@ -2,16 +2,17 @@ package imedevo.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 /**
@@ -23,17 +24,17 @@ import javax.persistence.Table;
 public class Doctor {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private long id;
+  private Long id;
 
   @Column(name = "user_id")
-  private long userId;
+  private Long userId;
 
-  @OneToOne(mappedBy = "doctor")
+  @OneToOne
+  @PrimaryKeyJoinColumn
   private AppUser user;
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @OneToMany(fetch = FetchType.LAZY)
   @JoinTable(
       name = "doctor_specializations",
       joinColumns = @JoinColumn(name = "doctor_id"),
@@ -47,13 +48,13 @@ public class Doctor {
   @Column(name = "doctor_achievements")
   private String doctorAchievements;
   @Column(name = "price")
-  private int price;
+  private Integer price;
   @Column(name = "work_experience")
-  private int workExperience;
+  private Integer workExperience;
   @Column(name = "pediatrician")
   private boolean pediatrician;
   @Column(name = "rating")
-  private int reting;
+  private Double reting;
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
@@ -63,20 +64,12 @@ public class Doctor {
   private List<DoctorClinic> doctorClinics;
 
   public Doctor() {
-    this.user = null;
-    this.specialization = new ArrayList<>();
-    this.doctorQualification = null;
-    this.education = null;
-    this.doctorAchievements = null;
-    this.price = 0;
-    this.workExperience = 0;
-    this.pediatrician = false;
-    this.reting = 0;
+
   }
 
   public Doctor(long userId, AppUser user,
       String doctorQualification, String education, String doctorAchievements, int price,
-      int workExperience, boolean pediatrician, int reting) {
+      int workExperience, boolean pediatrician, Double reting) {
     this.userId = userId;
     this.user = user;
     this.specialization = new ArrayList<>();
@@ -169,11 +162,11 @@ public class Doctor {
     this.pediatrician = pediatrician;
   }
 
-  public int getReting() {
+  public Double getReting() {
     return reting;
   }
 
-  public void setReting(int reting) {
+  public void setReting(Double reting) {
     this.reting = reting;
   }
 

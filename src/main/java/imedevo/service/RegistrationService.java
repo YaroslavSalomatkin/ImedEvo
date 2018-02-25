@@ -5,7 +5,6 @@ import imedevo.model.AppUser;
 import imedevo.model.Role;
 import imedevo.model.UserRole;
 import imedevo.repository.UserRepository;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +86,8 @@ public class RegistrationService {
       return map;
     }
 
-    appUser.setDateOfRegistration(Date.valueOf(LocalDate.now()));
+//    appUser.setDateOfRegistration(Date.valueOf(LocalDate.now()));
+    appUser.setDateOfRegistration(LocalDate.now().toString());
     userRepository.save(appUser);
     List<UserRole> userRoles = rolesService.getUserRoles(appUser.getId());
     userRoles.add(new UserRole(appUser.getId(), Role.USER));

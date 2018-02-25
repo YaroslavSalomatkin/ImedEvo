@@ -1,40 +1,36 @@
 package imedevo.service;
 
 import imedevo.configuration.WebSecurityConfig;
-import imedevo.security.JWTAuthenticationFilter;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.web.multipart.MultipartFile;
-
+import imedevo.httpStatuses.AccessDeniedException;
+import imedevo.httpStatuses.UserNotFoundException;
+import imedevo.httpStatuses.UserStatus;
+import imedevo.model.AppUser;
+import imedevo.model.ChangePassword;
+import imedevo.model.Image;
+import imedevo.model.Role;
+import imedevo.model.UserRole;
+import imedevo.repository.ImageRepository;
+import imedevo.repository.UserRepository;
+import imedevo.repository.UserRoleRepository;
 import java.io.IOException;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import imedevo.httpStatuses.AccessDeniedException;
-import imedevo.httpStatuses.UserNotFoundException;
-import imedevo.httpStatuses.UserStatus;
-import imedevo.model.Image;
-import imedevo.model.Role;
-import imedevo.model.AppUser;
-import imedevo.model.UserRole;
-import imedevo.repository.ImageRepository;
-import imedevo.repository.UserRepository;
-import imedevo.repository.UserRoleRepository;
 import javax.transaction.Transactional;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserService {
@@ -63,6 +59,7 @@ public class UserService {
     List<AppUser> listOfUsers = (List<AppUser>) userRepository.findAll();
     for (AppUser user : listOfUsers) {
       user.setUserRoles(rolesService.getUserRoles(user.getId()));
+      user.setPassword("not displayed");
     }
     return listOfUsers;
   }
@@ -73,6 +70,7 @@ public class UserService {
       throw new UserNotFoundException();
     }
     user.setUserRoles(rolesService.getUserRoles(id));
+    user.setPassword("not displayed");
     return user;
   }
 
@@ -94,7 +92,8 @@ public class UserService {
       map.put(status, UserStatus.REGISTRATION_ERROR_INCORRECT_PASSWORD);
       return map;
     }
-    appUser.setDateOfRegistration(Date.valueOf(LocalDate.now()));
+
+    appUser.setDateOfRegistration(LocalDate.now().toString());
     map.put(status, UserStatus.ADD_USER_OK);
     map.put("appUser", userRepository.save(appUser));
 
@@ -131,6 +130,10 @@ public class UserService {
       Field[] fields = updatedUser.getClass().getDeclaredFields();
       AccessibleObject.setAccessible(fields, true);
       for (Field field : fields) {
+        if (field.getName().equals("id") || field.getName().equals("password") ||
+            field.getName().equals("dateOfRegistration") || field.getName().equals("userRoles")) {
+          continue;
+        }
         Object userFromDbValue = ReflectionUtils.getField(field, updatedUser);
         if (userFromDbValue != null) {
           ReflectionUtils.setField(field, userFromDb, userFromDbValue);
@@ -210,12 +213,23 @@ public class UserService {
     return map;
   }
 
-  public AppUser getByUsername(String username) throws UserNotFoundException {
-    AppUser appUser = userRepository.findByUsername(username);
-    if (appUser == null) {
-      throw new UserNotFoundException();
+  public Map<String, Object> changePassword(ChangePassword changePassword)
+      throws AccessDeniedException {
+    Map<String, Object> map = new HashMap<>();
+    if (changePassword.getEmail() == null || changePassword.getPassword() == null) {
+      map.put("status", UserStatus.PASSWORD_CHANGE_REJECTED);
+      return map;
     }
-    appUser.setUserRoles(rolesService.getUserRoles(appUser.getId()));
-    return appUser;
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    System.out.println(email);
+    AppUser user = userRepository.findByUsername(changePassword.getEmail());
+    if (user.getUsername().equals(email)) {
+      user.setPassword(changePassword.getPassword());
+      map.put("status", UserStatus.PASSWORD_CHANGE_OK);
+      map.put("user", userRepository.save(user));
+    } else {
+      throw new AccessDeniedException();
+    }
+    return map;
   }
 }
