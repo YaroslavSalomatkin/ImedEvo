@@ -54,6 +54,7 @@ public enum UserStatus {
   APPOINTMENT_DELETE(754, "Appointment deleted"),
   APPOINTMENT_INVALID(755, "Appointment invalid"),
   APPOINTMENT_NOT_FOUND(756, "Appointment not found"),
+  APPOINTMENT_EDITORING_ERROR(757, "Editoring error: id missed"),
 
   // favourite doctors
   FAVOURITE_DOCTOR_ADD_OK(770, "Favourite doctor added"),
