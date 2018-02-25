@@ -36,6 +36,9 @@ public class RegistrationService {
   @Autowired
   private RolesService rolesService;
 
+  @Autowired
+  private GeocodingService geocoding;
+
   @Transactional
   public Map<String, Object> createNewUserInDB(User user) {
     Map<String, Object> map = new HashMap<>();
@@ -85,6 +88,11 @@ public class RegistrationService {
     if (!isCorrectPassword(user)) {
       map.put(status, UserStatus.REGISTRATION_ERROR_INCORRECT_PASSWORD);
       return map;
+    }
+
+    //TODO
+    if (user.getCity() != null) {
+      user.setCity(geocoding.getGeopositionByAddress(user.getCity()).getAddress());
     }
 
     user.setDateOfRegistration(LocalDate.now().toString());

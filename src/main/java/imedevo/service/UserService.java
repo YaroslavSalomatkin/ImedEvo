@@ -47,6 +47,9 @@ public class UserService {
   @Autowired
   private ImageRepository imageRepository;
 
+  @Autowired
+  private GeocodingService geocoding;
+
   private final String status = "status";
 
   public List<User> getAll() {
@@ -86,6 +89,11 @@ public class UserService {
       map.put(status, UserStatus.REGISTRATION_ERROR_INCORRECT_PASSWORD);
       return map;
     }
+
+    if (user.getCity() != null) {
+      user.setCity(geocoding.getGeopositionByAddress(user.getCity()).getAddress());
+    }
+
     user.setDateOfRegistration(LocalDate.now().toString());
     map.put(status, UserStatus.ADD_USER_OK);
     map.put("user", userRepository.save(user));
@@ -120,6 +128,9 @@ public class UserService {
     if (userFromDb == null) {
       map.put(status, UserStatus.NOT_FOUND);
     } else {
+      if (updatedUser.getCity() != null) {
+        updatedUser.setCity(geocoding.getGeopositionByAddress(updatedUser.getCity()).getAddress());
+      }
       Field[] fields = updatedUser.getClass().getDeclaredFields();
       AccessibleObject.setAccessible(fields, true);
       for (Field field : fields) {
