@@ -32,7 +32,6 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-mail')
 
     compile("io.jsonwebtoken:jjwt:0.7.0")
-//    compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
 
     compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.8')
     compile("org.springframework.boot:spring-boot-starter-data-jpa") {
