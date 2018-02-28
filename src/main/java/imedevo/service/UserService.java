@@ -230,7 +230,7 @@ public class UserService {
     System.out.println(email);
     AppUser user = userRepository.findByUsername(changePassword.getEmail());
     if (user.getUsername().equals(email)) {
-      user.setPassword(changePassword.getPassword());
+      user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
       map.put("status", UserStatus.PASSWORD_CHANGE_OK);
       map.put("user", userRepository.save(user));
     } else {

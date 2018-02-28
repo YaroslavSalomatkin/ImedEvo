@@ -49,7 +49,7 @@ public class LaboratoryController {
   }
 
   @DeleteMapping("/admin/deletelaboratory")
-  @PreAuthorize("hasAnyRole('CLINIC_ADMIN', 'SUPER_ADMIN')")
+  @PreAuthorize("hasRole('SUPER_ADMIN')")
   public void deleteLaboratory(@RequestParam ("id") Long id) {
     laboratoryService.deleteLaboratory(id).orElseThrow(NoSuchClinicException::new);
   }

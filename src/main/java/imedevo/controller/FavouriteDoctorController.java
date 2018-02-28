@@ -27,18 +27,19 @@ public class FavouriteDoctorController {
   private FavouriteDoctorService favouriteDoctorService;
 
   @GetMapping("/{id}")
+  @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
   public List<Doctor> getFavouriteDoctors(@PathVariable long id) throws UserNotFoundException {
     return favouriteDoctorService.getById(id);
   }
 
   @PostMapping("/addfavouritedoctor")
-  @PreAuthorize("hasAnyRole('USER', 'DOCTOR', 'CLINIC_ADMIN', 'SUPER_ADMIN', 'BLOGGER')")
+  @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
   public Map<String, Object> addFavouriteDoctor(@RequestBody FavouriteDoctor favouriteDoctor) {
     return favouriteDoctorService.addFavouriteDoctor(favouriteDoctor);
   }
 
   @DeleteMapping("/deletefavouritedoctor")
-  @PreAuthorize("hasAnyRole('USER', 'DOCTOR', 'CLINIC_ADMIN', 'SUPER_ADMIN', 'BLOGGER')")
+  @PreAuthorize("hasAnyRole('USER','SUPER_ADMIN')")
   public Map<String, Object> deleteFavouriteDoctor(@RequestParam(name = "id") long id) {
     return favouriteDoctorService.deleteFavouriteDoctor(id);
   }

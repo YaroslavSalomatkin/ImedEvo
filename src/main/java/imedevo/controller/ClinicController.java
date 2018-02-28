@@ -52,7 +52,7 @@ public class ClinicController {
   }
 
   @DeleteMapping("/deleteclinic/{id}")
-  @PreAuthorize("hasAnyRole('CLINIC_ADMIN', 'SUPER_ADMIN')")
+  @PreAuthorize("hasRole('SUPER_ADMIN')")
   public void deleteClinic(@PathVariable Long id) {
     clinicService.delete(id)
         .orElseThrow(NoSuchClinicException::new);

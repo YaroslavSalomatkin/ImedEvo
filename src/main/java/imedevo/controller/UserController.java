@@ -29,18 +29,19 @@ public class UserController {
   private UserService userService;
 
   @GetMapping("/getall")
-  @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+  @PreAuthorize("hasRole('SUPER_ADMIN')")
   public List<AppUser> getAllUsers() {
     return userService.getAll();
   }
 
   @GetMapping("/{id}")
-  @PreAuthorize("hasAnyRole('USER', 'DOCTOR', 'CLINIC_ADMIN', 'SUPER_ADMIN', 'BLOGGER')")
+  @PreAuthorize("hasAnyRole('USER', 'CLINIC_ADMIN', 'SUPER_ADMIN')")
   public AppUser getUserById(@PathVariable long id) throws UserNotFoundException {
     return userService.getById(id);
   }
 
   @PostMapping("/createuser")
+  @PreAuthorize("hasRole('SUPER_ADMIN')")
   public Map<String, Object> createUser(@RequestBody AppUser user) {
     return userService.save(user);
   }
@@ -53,13 +54,13 @@ public class UserController {
   }
 
   @PutMapping("/updateuser")
-  @PreAuthorize("hasAnyRole('USER', 'DOCTOR', 'CLINIC_ADMIN', 'SUPER_ADMIN', 'BLOGGER')")
+  @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
   public Map<String, Object> updateUser(@RequestBody AppUser appUser) throws UserNotFoundException {
     return userService.updateUser(appUser);
   }
 
   @DeleteMapping("/deleteuser/{id}")
-  @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+  @PreAuthorize("hasRole('SUPER_ADMIN')")
   public void deleteUser(@PathVariable long id)
       throws UserNotFoundException, AccessDeniedException {
     userService.deleteUser(id);
@@ -72,7 +73,7 @@ public class UserController {
   }
 
   @PostMapping("/changepassword")
-  @PreAuthorize("hasAnyRole('USER', 'DOCTOR', 'CLINIC_ADMIN', 'SUPER_ADMIN', 'BLOGGER')")
+  @PreAuthorize("hasAnyRole('USER', 'CLINIC_ADMIN', 'SUPER_ADMIN')")
   public Map<String, Object> changePassword(@RequestBody ChangePassword changePassword)
       throws AccessDeniedException {
     return userService.changePassword(changePassword);
