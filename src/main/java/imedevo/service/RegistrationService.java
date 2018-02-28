@@ -15,6 +15,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,6 +35,11 @@ public class RegistrationService {
   @Autowired
   private RolesService rolesService;
 
+  @Autowired
+  public BCryptPasswordEncoder bCryptPasswordEncoder;
+
+  @Autowired
+  private GeocodingService geocoding;
 
   @Transactional
   public Map<String, Object> createNewUserInDB(AppUser appUser) {
@@ -86,7 +92,11 @@ public class RegistrationService {
       return map;
     }
 
-//    appUser.setDateOfRegistration(Date.valueOf(LocalDate.now()));
+    //TODO
+    if (appUser.getCity() != null) {
+      appUser.setCity(geocoding.getGeopositionByAddress(appUser.getCity()).getAddress());
+    }
+
     appUser.setDateOfRegistration(LocalDate.now().toString());
     userRepository.save(appUser);
     List<UserRole> userRoles = rolesService.getUserRoles(appUser.getId());
@@ -99,6 +109,8 @@ public class RegistrationService {
     } catch (MailException mailException) {
       logger.error("Error while sending email registration: " + mailException);
     }
+
+    appUser.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
 
     map.put(status, UserStatus.REGISTRATION_OK);
     map.put("user", appUser);

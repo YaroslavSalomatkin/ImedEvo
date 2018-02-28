@@ -15,6 +15,7 @@ import java.util.Optional;
 import imedevo.httpStatuses.HospitalStatus;
 import imedevo.httpStatuses.NoSuchClinicException;
 import imedevo.model.Diagnostic;
+import imedevo.model.Geoposition;
 import imedevo.repository.DiagnosticRepository;
 import javax.transaction.Transactional;
 
@@ -23,6 +24,9 @@ public class DiagnosticService {
 
   @Autowired
   private DiagnosticRepository diagnosticRepository;
+
+  @Autowired
+  private GeocodingService geocoding;
 
   public List<Diagnostic> getAll() {
     return (List<Diagnostic>) diagnosticRepository.findAll();
@@ -45,7 +49,7 @@ public class DiagnosticService {
       return map;
     }
 
-    if (diagnostic.getName() == null | diagnostic.getName().trim().length() < 3) {
+    if (diagnostic.getName() == null || diagnostic.getName().trim().length() < 3) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
       return map;
     }
@@ -55,15 +59,20 @@ public class DiagnosticService {
       return map;
     }
 
-    if (diagnostic.getAddress() == null | diagnostic.getAddress().trim().length() < 8) {
+    if (diagnostic.getAddress() == null || diagnostic.getAddress().trim().length() < 8) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
       return map;
     }
 
-    if (diagnostic.getDescription() == null | diagnostic.getDescription().trim().length() < 5) {
+    if (diagnostic.getDescription() == null || diagnostic.getDescription().trim().length() < 5) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_DESCRIPTION);
       return map;
     }
+    Geoposition geoposition = geocoding.getGeopositionByAddress(diagnostic.getAddress());
+    diagnostic.setAddress(geoposition.getAddress());
+    diagnostic.setLatitude(geoposition.getLat());
+    diagnostic.setLongitude(geoposition.getLng());
+
     diagnostic.setRegistrationDate(LocalDate.now().toString());
     map.put("status", HospitalStatus.REGISTRATION_OK);
     map.put("diagnostic", diagnosticRepository.save(diagnostic));
@@ -77,6 +86,13 @@ public class DiagnosticService {
     if (updatedDiagnostic.getId() == null) {
       map.put("status", HospitalStatus.EDIT_PROFILE_ERROR);
       return map;
+    }
+
+    if (updatedDiagnostic.getAddress() != null) {
+      Geoposition geoposition = geocoding.getGeopositionByAddress(updatedDiagnostic.getAddress());
+      updatedDiagnostic.setAddress(geoposition.getAddress());
+      updatedDiagnostic.setLatitude(geoposition.getLat());
+      updatedDiagnostic.setLongitude(geoposition.getLng());
     }
 
     Diagnostic diagnosticFromDb = diagnosticRepository.findOne(updatedDiagnostic.getId());

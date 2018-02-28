@@ -5,7 +5,6 @@ import imedevo.model.UserRole;
 import imedevo.repository.UserRepository;
 import imedevo.repository.UserRoleRepository;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -31,9 +30,6 @@ public class CustomUserDetailService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//    AppUser appUser = Optional.ofNullable(
-//        userRepository.findByUsername(username))
-//        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
     AppUser appUser = loadAppUser(username);
 
@@ -50,16 +46,15 @@ public class CustomUserDetailService implements UserDetailsService {
     return new User(appUser.getUsername(), appUser.getPassword(), authorityList);
   }
 
-  public AppUser loadAppUser(String username)throws UsernameNotFoundException{
+  public AppUser loadAppUser(String username) throws UsernameNotFoundException {
 //    AppUser appUser = Optional.ofNullable(
 //        userRepository.findByUsername(username))
 //        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-      AppUser appUser = userRepository.findByUsername(username);
-      if(appUser == null){
-        throw new UsernameNotFoundException("User no found");
-      }
-      return appUser;
-
+    AppUser appUser = userRepository.findByUsername(username);
+    if (appUser == null) {
+      throw new UsernameNotFoundException("User no found");
+    }
+    return appUser;
   }
 }

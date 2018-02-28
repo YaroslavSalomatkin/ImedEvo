@@ -53,6 +53,9 @@ public class UserService {
   @Autowired
   WebSecurityConfig webSecurityConfig;
 
+  @Autowired
+  private GeocodingService geocoding;
+
   private final String status = "status";
 
   public List<AppUser> getAll() {
@@ -93,7 +96,12 @@ public class UserService {
       return map;
     }
 
+    if (appUser.getCity() != null) {
+      appUser.setCity(geocoding.getGeopositionByAddress(appUser.getCity()).getAddress());
+    }
+
     appUser.setDateOfRegistration(LocalDate.now().toString());
+
     map.put(status, UserStatus.ADD_USER_OK);
     map.put("appUser", userRepository.save(appUser));
 
@@ -127,6 +135,9 @@ public class UserService {
     if (userFromDb == null) {
       map.put(status, UserStatus.NOT_FOUND);
     } else {
+      if (updatedUser.getCity() != null) {
+        updatedUser.setCity(geocoding.getGeopositionByAddress(updatedUser.getCity()).getAddress());
+      }
       Field[] fields = updatedUser.getClass().getDeclaredFields();
       AccessibleObject.setAccessible(fields, true);
       for (Field field : fields) {
@@ -166,16 +177,12 @@ public class UserService {
 
   public Map<String, Object> uploadImage(long userId, MultipartFile imageFile) {
 
-    System.out.println("userId = " + userId);
-    System.out.println("file = " + imageFile.getOriginalFilename());
-
     String fileName = "";
     String link = "";
+    String uploadImageFolder = "testfolder";
 
     Logger logger = LogManager.getLogger(getClass());
-    String uploadImageFolder = "testfolder";
     Map<String, Object> map = new HashMap<>();
-
     if (!imageFile.isEmpty()) {
       try {
         if (!Files.exists(Paths.get(uploadImageFolder))) {
@@ -205,7 +212,6 @@ public class UserService {
         .matches(password, userFromRepository.getPassword())) {
       map.put("status", UserStatus.LOGIN_BAD_LOGIN);
     } else {
-//      webSecurityConfig.configureGlobal(userFromRepository);
       map.put("status", UserStatus.LOGIN_OK);
       map.put("user", userFromRepository);
 

@@ -1,8 +1,13 @@
 # iMedEVO
 
-1. To build project in the console, you should:  
-**./gradlew build**  
-Next step:  
-**java -jar build/libs/iMedEVO-0.1.0.jar**  
-2. For Spring, you need to choose port 8080, with which tomcat is started.
-3. Link for test http://localhost:8080/users/getall
+IMED is a service for seeking doctors.
+
+We are striving to facilitate finding a good doctor promptly and making an appointment with the one.
+
+We have created a database of doctors, gather patients' feedback after their appointments and publish it on the site for that.
+
+Site: <https://www.imed.od.ua>
+
+Location:  Odesa, Ukraine
+
+LinkedIn profile: <https://www.linkedin.com/company/imedicine/>

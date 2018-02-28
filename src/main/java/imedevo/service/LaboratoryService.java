@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import imedevo.httpStatuses.HospitalStatus;
 import imedevo.httpStatuses.NoSuchClinicException;
+import imedevo.model.Geoposition;
 import imedevo.model.Laboratory;
 import imedevo.repository.LaboratoryRepository;
 import javax.transaction.Transactional;
@@ -23,6 +24,9 @@ public class LaboratoryService {
 
   @Autowired
   private LaboratoryRepository laboratoryRepository;
+
+  @Autowired
+  private GeocodingService geocoding;
 
   public List<Laboratory> getAll() {
     return (List<Laboratory>) laboratoryRepository.findAll();
@@ -45,7 +49,7 @@ public class LaboratoryService {
       return map;
     }
 
-    if (laboratory.getName() == null | laboratory.getName().trim().length() < 3) {
+    if (laboratory.getName() == null || laboratory.getName().trim().length() < 3) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_NAME);
       return map;
     }
@@ -55,15 +59,20 @@ public class LaboratoryService {
       return map;
     }
 
-    if (laboratory.getAddress() == null | laboratory.getAddress().trim().length() < 8) {
+    if (laboratory.getAddress() == null || laboratory.getAddress().trim().length() < 8) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_ADDRESS);
       return map;
     }
 
-    if (laboratory.getDescription() == null | laboratory.getDescription().trim().length() < 5) {
+    if (laboratory.getDescription() == null || laboratory.getDescription().trim().length() < 5) {
       map.put("status", HospitalStatus.REGISTRATION_ERROR_EMPTY_DESCRIPTION);
       return map;
     }
+
+    Geoposition geoposition = geocoding.getGeopositionByAddress(laboratory.getAddress());
+    laboratory.setAddress(geoposition.getAddress());
+    laboratory.setLatitude(geoposition.getLat());
+    laboratory.setLongitude(geoposition.getLng());
     laboratory.setRegistrationDate(LocalDate.now().toString());
     map.put("status", HospitalStatus.REGISTRATION_OK);
     map.put("laboratory", laboratoryRepository.save(laboratory));
@@ -77,6 +86,13 @@ public class LaboratoryService {
     if (updatedLaboratory.getId() == null) {
       map.put("status", HospitalStatus.EDIT_PROFILE_ERROR);
       return map;
+    }
+
+    if (updatedLaboratory.getAddress() != null) {
+      Geoposition geoposition = geocoding.getGeopositionByAddress(updatedLaboratory.getAddress());
+      updatedLaboratory.setAddress(geoposition.getAddress());
+      updatedLaboratory.setLatitude(geoposition.getLat());
+      updatedLaboratory.setLongitude(geoposition.getLng());
     }
 
     Laboratory laboratoryFromDb = laboratoryRepository.findOne(updatedLaboratory.getId());

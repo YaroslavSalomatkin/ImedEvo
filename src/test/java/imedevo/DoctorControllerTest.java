@@ -28,7 +28,7 @@
 //
 //  @Autowired
 //  private MockMvc mockMvc;
-
+//
 //  @MockBean
 //  private DoctorService doctorService;
 //  private DoctorRepository doctorRepository;
@@ -39,7 +39,7 @@
 //    ObjectMapper mapper = new ObjectMapper();
 //    return mapper.writeValueAsString(object);
 //  }
-
+//
 //  @Test
 //  public void getAll() throws Exception {
 //    when(doctorService.getAll()).thenReturn(Arrays.asList(doctor));

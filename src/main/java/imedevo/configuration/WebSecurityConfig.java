@@ -4,7 +4,6 @@ package imedevo.configuration;
 import imedevo.security.JWTAuthenticationFilter;
 import imedevo.security.JWTAuthorizationFilter;
 import imedevo.service.CustomUserDetailService;
-import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,9 +26,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  @Autowired
-  private DataSource dataSource;
-
   private final CustomUserDetailService customUserDetailService;
 
   @Autowired
@@ -37,7 +33,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     this.customUserDetailService = customUserDetailService;
   }
 
-//
 //  @Override
 //  public void configure(WebSecurity web) throws Exception {
 //    web.ignoring()
@@ -49,8 +44,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     http
         .cors().and().csrf().disable().authorizeRequests()
-        .antMatchers(HttpMethod.POST, "/**").permitAll()
-        .antMatchers(HttpMethod.POST, "/users/login").permitAll()
+        .antMatchers().permitAll()
+        .antMatchers("/resources/**").permitAll()
+        .antMatchers("/**").permitAll()
+        .antMatchers("/login**").permitAll()
         .antMatchers(HttpMethod.POST, "/users/registration").permitAll()
         .antMatchers(HttpMethod.GET, "/doctors/getall").permitAll()
         .antMatchers(HttpMethod.GET, "/doctors/*").permitAll()
@@ -64,23 +61,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.POST, "/forgot/newpassword").permitAll()
         .antMatchers(HttpMethod.GET, "/search/byanyparams").permitAll()
         .anyRequest().authenticated()
-//        .antMatchers("/users/**")
-//        .hasAnyRole("USER", "SUPER_ADMIN", "DOCTOR", "CLINIC_ADMIN")
-//        .antMatchers("/users/updateuser")
-//        .hasAnyRole("USER", "SUPER_ADMIN", "DOCTOR", "CLINIC_ADMIN")
-//        .antMatchers("/doctors/updatedoctor")
-//        .hasAnyRole("DOCTOR", "CLINIC_ADMIN", "SUPER_ADMIN")
-//        .antMatchers("/users/createdoctor", "/doctors/deletedoctor/*",
-//            "/clinics/createclinic", "/clinics/updateclinic", "/clinics/deleteclinic/*")
-//        .hasAnyRole("CLINIC_ADMIN", "SUPER_ADMIN")
-//        .antMatchers("/users/getall")
-//        .hasRole("SUPER_ADMIN")
+        .and()
+        .formLogin()
+        .loginPage("/login")
+        .usernameParameter("username").passwordParameter("password")
+        .permitAll()
+        .and()
+        .logout().logoutUrl("/logout").deleteCookies("JSESSIONID")
+        .clearAuthentication(true).logoutSuccessUrl("/login")
         .and()
         .addFilter(new JWTAuthenticationFilter(authenticationManager(), customUserDetailService))
         .addFilter(new JWTAuthorizationFilter(authenticationManager(), customUserDetailService));
-//        .and()
-//        .logout().logoutUrl("/users/logout").deleteCookies("JSESSIONID")
-//        .clearAuthentication(true).logoutSuccessUrl("/users/login");
 //        .csrf()
 //        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
   }
@@ -88,17 +79,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     auth.userDetailsService(customUserDetailService).passwordEncoder(bCryptPasswordEncoder);
-//    auth
-//        .jdbcAuthentication()
-//        .dataSource(dataSource)
-//        .usersByUsernameQuery(
-//            "select u.email as username, u.password, true as enabled from users u "
-//                + "where u.email=?")
-//        .authoritiesByUsernameQuery(
-//            "select u.email as username, r.role from users u "
-//                + "join user_roles ur "
-//                + "join roles r "
-//                + "on r.id=ur.role_id and u.id=ur.user_id "
-//                + "where u.email=?");
   }
 }

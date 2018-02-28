@@ -17,7 +17,6 @@ import java.io.PrintWriter;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,8 +28,6 @@ import org.hibernate.SessionFactory;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -99,14 +96,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     jsonResponse.put("response", mapResponse);
 
-    // finally output the json string
     out.print(jsonResponse.toString());
 
-//    response.setHeader("Accept", "application/json");
-//    response.setHeader("Content-type", "application/json");
-//    response.getWriter().write(mapResponse);
-
-   //    response.getWriter().write(token);
+    //    response.getWriter().write(token);
     response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
   }
 }

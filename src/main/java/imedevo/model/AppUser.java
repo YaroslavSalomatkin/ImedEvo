@@ -93,18 +93,18 @@ public class AppUser {
         ", firstName='" + firstName + '\'' +
         ", patronymic='" + patronymic + '\'' +
         ", phone='" + phone + '\'' +
-        ", email='" + username + '\'' +
+        ", username='" + username + '\'' +
         ", city='" + city + '\'' +
         ", house='" + house + '\'' +
         ", street='" + street + '\'' +
         ", sex='" + sex + '\'' +
         ", birthDate=" + birthDate +
         ", dateOfRegistration=" + dateOfRegistration +
-//        ", userRoles=" + userRoles +
+        ", userRoles=" + userRoles +
         '}';
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
