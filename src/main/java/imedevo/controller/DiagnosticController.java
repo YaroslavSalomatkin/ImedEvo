@@ -47,7 +47,7 @@ public class DiagnosticController {
   }
 
   @DeleteMapping("/admin/deletediagnostic")
-  @PreAuthorize("hasAnyRole('CLINIC_ADMIN', 'SUPER_ADMIN')")
+  @PreAuthorize("hasRole('SUPER_ADMIN')")
   public void deleteDiagnostic(@RequestParam("id") Long id) {
     diagnosticService.deleteDiagnostic(id).orElseThrow(NoSuchClinicException::new);
   }

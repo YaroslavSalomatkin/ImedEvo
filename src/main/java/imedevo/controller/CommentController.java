@@ -1,6 +1,7 @@
 package imedevo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class CommentController {
   private CommentService commentService;
 
   @GetMapping("/byusers/{id}")
+  @PreAuthorize("hasAnyRole('USER', 'DOCTOR', 'CLINIC_ADMIN', 'SUPER_ADMIN')")
   public List<Comment> getByUserId(@PathVariable long id) {
     return commentService.getByUserId(id);
   }
@@ -46,17 +48,20 @@ public class CommentController {
   }
 
   @PostMapping("/addcomment")
+  @PreAuthorize("hasAnyRole('USER', 'DOCTOR', 'CLINIC_ADMIN', 'SUPER_ADMIN')")
   public Map<String, Object> addComment(@RequestBody Comment comment) {
     return commentService.addComment(comment);
   }
 
   @PutMapping("/updatecomment")
+  @PreAuthorize("hasAnyRole('USER', 'DOCTOR', 'CLINIC_ADMIN', 'SUPER_ADMIN')")
   public Map<String, Object> updateComment(@RequestBody Comment comment)
       throws AccessDeniedException {
     return commentService.updateComment(comment);
   }
 
   @DeleteMapping("/deletecomment")
+  @PreAuthorize("hasRole('SUPER_ADMIN')")
   public Map<String, Object> deleteComment(@RequestParam(name = "id") long id)
       throws AccessDeniedException {
     return commentService.deleteComment(id);
