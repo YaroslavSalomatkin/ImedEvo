@@ -2,8 +2,10 @@ package imedevo.service;
 
 import imedevo.httpStatuses.UserStatus;
 import imedevo.model.AppUser;
+import imedevo.model.Image;
 import imedevo.model.Role;
 import imedevo.model.UserRole;
+import imedevo.repository.ImageRepository;
 import imedevo.repository.UserRepository;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -40,6 +42,9 @@ public class RegistrationService {
 
   @Autowired
   private GeocodingService geocoding;
+
+  @Autowired
+  private ImageRepository imageRepository;
 
   @Transactional
   public Map<String, Object> createNewUserInDB(AppUser appUser) {
@@ -109,6 +114,8 @@ public class RegistrationService {
     } catch (MailException mailException) {
       logger.error("Error while sending email registration: " + mailException);
     }
+    appUser.setImage(imageRepository.save(
+        new Image(appUser.getId(), "https://imed.od.ua/assets/images/default-placeholder.png")));
 
     appUser.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
 

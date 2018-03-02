@@ -73,6 +73,7 @@ public class UserService {
       throw new UserNotFoundException();
     }
     user.setUserRoles(rolesService.getUserRoles(id));
+    user.setImage(imageRepository.findByUserId(id));
     user.setPassword("not displayed");
     return user;
   }
@@ -179,7 +180,7 @@ public class UserService {
 
     String fileName = "";
     String link = "";
-    String uploadImageFolder = "testfolder";
+    String uploadImageFolder = "src/main/resources/static/assets/images";
 
     Logger logger = LogManager.getLogger(getClass());
     Map<String, Object> map = new HashMap<>();
