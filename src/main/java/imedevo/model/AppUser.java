@@ -11,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 
 @Entity
 @Table(name = "users")
@@ -64,12 +67,16 @@ public class AppUser {
       inverseJoinColumns = @JoinColumn(name = "user_id"))
   private List<UserRole> userRoles;
 
+  @OneToOne
+  @PrimaryKeyJoinColumn
+  private Image image;
+
   public AppUser() {
   }
 
   public AppUser(String firstName, String lastName, String phone, String username,
       String password, String city, String house, String street, String patronymic, String sex,
-      Date birthDate, String dateOfRegistration) {
+      Date birthDate, String dateOfRegistration, Image image) {
     this.lastName = lastName;
     this.firstName = firstName;
     this.patronymic = patronymic;
@@ -83,6 +90,7 @@ public class AppUser {
     this.sex = sex;
     this.birthDate = birthDate;
     this.dateOfRegistration = dateOfRegistration;
+    this.image = image;
   }
 
   @Override
@@ -101,6 +109,7 @@ public class AppUser {
         ", birthDate=" + birthDate +
         ", dateOfRegistration=" + dateOfRegistration +
         ", userRoles=" + userRoles +
+        ", image=" + image +
         '}';
   }
 
@@ -214,5 +223,13 @@ public class AppUser {
 
   public void setDateOfRegistration(String dateOfRegistration) {
     this.dateOfRegistration = dateOfRegistration;
+  }
+
+  public Image getImage() {
+    return image;
+  }
+
+  public void setImage(Image image) {
+    this.image = image;
   }
 }

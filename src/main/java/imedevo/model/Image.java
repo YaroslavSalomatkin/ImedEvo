@@ -23,6 +23,9 @@ public class Image {
   @Column(name = "image_link")
   private String link;
 
+  public Image(){
+  }
+
   public Image(long userId, String link) {
     this.userId = userId;
     this.link = link;
