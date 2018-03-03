@@ -41,7 +41,6 @@ public class BlogService {
     if (blog == null) {
       throw new BlogNotFoundException();
     }
-
     return blog;
   }
 
@@ -55,17 +54,14 @@ public class BlogService {
     }
     if (blog.getFirstName() == null) {
       map.put("status", BlogStatus.REGISTRATION_ERROR_EMPTY_FIRSTNAME);
-
       return map;
     }
     if (blog.getLastName() == null) {
       map.put("status", BlogStatus.REGISTRATION_ERROR_EMPTY_LASTNAME);
-
       return map;
     }
     if (blog.getArticleName() == null) {
       map.put("status", BlogStatus.REGISTRATION_ERROR_EMPTY_ARTICLENAME);
-
       return map;
     }
 
@@ -104,6 +100,7 @@ public class BlogService {
 
     if (blogRepository.exists(id)) {
       blogRepository.delete(id);
+      map.put("status", BlogStatus.DELETE_SUCCESS);
     } else {
       throw new BlogNotFoundException();
     }
